@@ -1,0 +1,38 @@
+interactions:
+- request:
+    body: '{"text": "Hello world from botte http client pytests!", "sender_app": "BOTTE_HTTP_CLIENT"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - '**REDACTED**'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '90'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-requests/2.32.5
+    method: POST
+    uri: https://5t325uqwq7.execute-api.eu-south-1.amazonaws.com/message
+  response:
+    body:
+      string: '{"message": "Forbidden"}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '23'
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 30 Oct 2025 17:48:50 GMT
+      apigw-requestid:
+      - TRa4aiqisu8EMOQ=
+    status:
+      code: 403
+      message: Forbidden
+version: 1

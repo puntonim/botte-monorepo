@@ -1,0 +1,38 @@
+interactions:
+- request:
+    body: '{"Name": "/XXX", "WithDecryption": true}'
+    headers:
+      Authorization:
+      - '**REDACTED**'
+      Content-Length:
+      - '40'
+      Content-Type:
+      - !!binary |
+        YXBwbGljYXRpb24veC1hbXotanNvbi0xLjE=
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS40MC42MiBtZC9Cb3RvY29yZSMxLjQwLjYyIHVhLzIuMSBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCN4ODZfNjQgbGFuZy9weXRob24jMy4xMC4xNiBtZC9weWltcGwjQ1B5dGhvbiBtL2Is
+        WixuLEQgY2ZnL3JldHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuNDAuNjI=
+    method: POST
+    uri: https://ssm.eu-south-1.amazonaws.com/
+  response:
+    body:
+      string: '{"__type": "ParameterNotFound"}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '30'
+      Content-Type:
+      - application/x-amz-json-1.1
+      Date:
+      - Thu, 30 Oct 2025 18:06:37 GMT
+      Server:
+      - Server
+      x-amzn-RequestId:
+      - c5504fcb-9b24-4bdd-af06-5bdce4947b72
+    status:
+      code: 400
+      message: Bad Request
+version: 1

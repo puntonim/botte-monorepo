@@ -4,19 +4,7 @@
   kbee-be e experiments-monorepo: il poetry + recente
 
 ----------------
-
-- e2e tests
-- committare
-- client per http endpoint, non versioned
-  Aggiungere in tutti i readme che non serve fare lib o clients versioned se si installano via git (e non via PiPy)
-   perche si possono installare con uno specifico hash
-   e che qs hash sta sempre scritto in poetry.lock
-   [package.source]
-    type = "git"
-    url = "https://github.com/puntonim/utils-monorepo"
-    reference = "HEAD"
-    resolved_reference = "3da9603977a5e2948429627ac83309353cca693d"
-    subdirectory = "aws-utils" 
+- use botte-http-client in e2e tests
 
 - dynamodb interface, tests, e2e tests
 - dynamodb client
@@ -33,11 +21,14 @@
   Scrivere nel readme che avviene il polling, meglio usare dynamodb o http
 
 - /echo Telegram user command with webhooks
+  poi aggiorna docs (READMEs e architecture)
 
 - un unico progetto (new repo aws-watchdog??) che è una Lambda che controlla 
    qualunque errore (in qualunque lambda in AWS) e me li manda via email.
    Vedi `shared-infra.cloudwatch-error-email` in patatrack-monorepo. 
    Usarlo in botte-be 
+   Ocio che per deployarlo bisogna seguire un certo ordine, vedi quanto scritto in
+    patatrack monorepo.
 
 - controllare quali Lambdas ancora usano Botte in patatrack-monorepo
   e convertirle introducendo i clients di botte-be
@@ -48,4 +39,3 @@
 - archiviare git repo: patatrack-monorepo
   NB: non cancellarlo perchè c'è del codice interessante
 
-- cambia logo al BOT su Telegram

@@ -1,6 +1,6 @@
 [project]
 name = "botte-be"
-description = "Botte Backend: Telegram BOT"
+description = "Botte Monorepo: Botte Backend"
 authors = [
     {name = "puntonim", email = "puntonim@gmail.com"}
 ]
@@ -13,7 +13,7 @@ dependencies = [
     "aws-utils[lambda-redact-http-headers] @ git+https://github.com/puntonim/utils-monorepo#subdirectory=aws-utils",
     "datetime-utils @ git+https://github.com/puntonim/utils-monorepo#subdirectory=datetime-utils",
     "log-utils @ git+https://github.com/puntonim/utils-monorepo#subdirectory=log-utils",
-    "settings-utils[get-from-aws-param-store] @ git+https://github.com/puntonim/utils-monorepo#subdirectory=settings-utils"
+    "settings-utils[get-from-aws-param-store] @ git+https://github.com/puntonim/utils-monorepo#subdirectory=settings-utils",
 ]
 
 [build-system]

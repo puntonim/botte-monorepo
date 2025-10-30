@@ -4,7 +4,8 @@
     Botte monorepo
   </h1>
   <p align="center">
-    A project, Botte, and a collection of clients for its interfaces.<br>
+    A project, Botte Backend, and a collection of clients for its interfaces,
+     plus libs.<br>
     Botte is just a bot that sends messages to me, via Telegram for now.
   <p>
 </p>
@@ -14,9 +15,9 @@
 In this monorepo there are 2 categories of software:
 - 📚 `libs`: standalone Python libs that can be installed individually from the Git subdir.
   - `libs/*`: eg. `libs/botte-dynamodb-tasks`. Used only by projects/libs in this
-    monorepo. Not versioned.
-  - `libs/public clients/*`: eg. `libs/public clients/botte-http-client. Meant to be
-    used outside this repo. Versioned.
+    monorepo.
+  - `libs/public-clients/*`: eg. `libs/public-clients/botte-http-client`. Clients 
+     for Botte Backend interfaces, meant to be used outside this repo.
 - 💡 `projects`: only `projects/botte-be` for now. Deployed as (a set of) Lambdas.
 
 
@@ -24,13 +25,13 @@ In this monorepo there are 2 categories of software:
 ================
 
 The backend, [botte-be project](projects/botte-be), is a set of Lambda functions triggered:
- - via [HTTPS](libs/public clients/botte-http-client) with a secret auth token: 
+ - via [HTTPS](libs/public-clients/botte-http-client) with a secret auth token: 
     used by any consumer (and maybe, in the future, by Telegram webhook configured for
     Telegram user commands like `/echo`, see the old, and now 
     archived [patatrack-monorepo](https://github.com/puntonim/patatrack-monorepo);
- - via [SQS task Queue](libs/public clients/botte-sqs-client): no consumers yet - 
+ - via [SQS task Queue](libs/public-clients/botte-sqs-client): no consumers yet - 
     COMMENTED OUT because it incurs a little cost;
- - via [DynamoDB task Table](libs/public clients/botte-dynamodb-client): used by Lambda
+ - via [DynamoDB task Table](libs/public-clients/botte-dynamodb-client): used by Lambda
     consumers that are inside a VPC that has no internet connection (so they cannot use
     the HTTP interface - internet connection in a VPC is not free) but have a 
     VPC Gateway Endpoint to DynamoDB; example: the old, and now archived, Contabel
@@ -76,8 +77,13 @@ Btw: the solution DynamoDB Table + Stream + Lambda also solves the problem of a 
 ⚡ Usage
 =====
 
+There are [handy clients](libs/public-clients) for all Botte Backend interfaces.
+
 HTTP Interface
 --------------
+There is a handy client: [botte-http-client](libs/public-clients/botte-http-client)
+
+Without the client, you could use the interface like this:
 ```shell
 $ curl -X POST https://5t325uqwq7.execute-api.eu-south-1.amazonaws.com/message \
    -H 'Authorization: XXX' \

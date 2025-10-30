@@ -1,38 +1,29 @@
 <p align="center">
-  <img src="../../docs/img/logo.png" height="256"></a>
   <h1 align="center">
-    Botte monorepo: Botte Backend
+    📚 Botte monorepo: libs
   </h1>
   <p align="center">
-    Botte Backend. Botte is just a bot that sends messages to me, via Telegram for now.
+    A collection of libs and clients for Botte monorepo.
   <p>
 </p>
 
 <br>
 
-*Note on webhooks for Telegram user commands*
----------------------------------------------
-The first version of this project is in [patatrack-monorepo](https://github.com/puntonim/patatrack-monorepo/tree/main/projects/botte),
- now archived. It included a webhook endpoint for Telegram user commands like `/echo`,
- to interact with the bot by sending messages.
+- `libs`: standalone Python libs that can be installed individually from the Git subdir.
+  - `libs/*`: eg. `libs/botte-dynamodb-tasks`. Used only by projects/libs in this
+    monorepo.
+  - `libs/public-clients/*`: eg. `libs/public-clients/botte-http-client`. Clients 
+     for Botte Backend interfaces, meant to be used outside this repo.
 
 
-📐 Architecture
-================
+🎯 Target Python version
+========================
 
-See [README.md](../../README.md) in the root dir.
+The target is a Python version that is recent enough, but not too recent for a wide
+ compatibility.\
+Python 3.10 seems a good compromise.
 
-
-⚡ Usage
-=====
-
-See [README.md](../../README.md) in the root dir.
-
-
-💬 Telegram configuration
-=========================
-
-See [README.md](../../README.md) in the root dir.
+*Note: Python 3.10 introduced the annotation `| None` for optional types, among other things.*
 
 
 🛠️ Development setup
@@ -41,12 +32,12 @@ See [README.md](../../README.md) in the root dir.
 1 - System requirements
 ----------------------
 
-**Python 3.13**\
-The target Python 3.13 as it is the latest Python runtime available in AWS Lambda.\
+**Python 3.10**\
+The target Python 3.10 as it is the latest Python runtime available in AWS Lambda.\
 Install it with pyenv:
 ```sh
 $ pyenv install -l  # List all available versions.
-$ pyenv install 3.13.7
+$ pyenv install 3.10
 ```
 
 **Poetry**\
@@ -79,12 +70,12 @@ $ deactivate
 Without using Makefile the full process is:
 ```sh
 # Activate the Python version for the current project:
-$ pyenv local 3.13  # It creates `.python-version`, to be git-ignored.
+$ pyenv local 3.10  # It creates `.python-version`, to be git-ignored.
 $ pyenv which python
-/Users/nimiq/.pyenv/versions/3.13.7/bin/python
+/Users/nimiq/.pyenv/versions/3.10.16/bin/python
 
 # Now create a venv with poetry:
-$ poetry env use ~/.pyenv/versions/3.13.7/bin/python
+$ poetry env use ~/.pyenv/versions/3.10.16/bin/python
 # Now you can open a shell and/or install:
 $ eval $(poetry env activate)
 # And finally, install all requirements:
@@ -134,73 +125,14 @@ $ pip install "git+file:///Users/myuser/workspace/utils-monorepo@00a49cb64524df1
 $ pre-commit install
 ```
 
-🔨 Test
-======
-
-To run unit and end-to-end tests:
-```sh
-$ make test
-$ make test-e2e
-```
-
 
 🚀 Deployment
 =============
 
-### 1. Install deployment requirements
-
-The deployment is managed by Serverless. Serverless requires NodeJS.\
-Follow the [install instructions](https://github.com/nvm-sh/nvm#install--update-script) for NVM (Node Version Manager).\
-Then:
-```shell
-$ nvm install --lts
-$ node -v > .nvmrc
-```
-Follow the [install instructions](https://serverless.com/framework/docs/getting-started#install-as-a-standalone-binary)
-for Serverless, something like `curl -o- -L https://slss.io/install | bash`.
-We currently use version 3.12.0, if you have an older major version you can upgrade Serverless with: `sls upgrade --major`.
-
-Then to install the Serverless plugins required:
-```shell
-#$ sls upgrade  # Only if you are sure it will not install a major version.
-$ nvm install
-$ nvm use
-```
-
-### 2. Deployments steps
-
-#### 2a. AWS Parameter Store
-Add to AWS Parameter Store these params:
- - `/botte-be/prod/telegram-token`  # The token required by Telegram to use the Telegram bot.
- - `/botte-be/prod/api-authorizer-token`  # The token required by some Lambda endpoints in this project.
-
-#### 2b. Actual deploy
-Note: AWS CLI and credentials should be already installed and configured.\
-
-Finally, deploy to **PRODUCTION** in AWS with:
-```sh
-$ sls deploy
-# $ make deploy  # Alternative.
-```
-
-To deploy a single function (only if it was already deployed):
-```sh
-$ sls deploy function -f endpoint-health
-```
-
-
-Deploy to a DEV STAGE
----------------------
-Pick a stage name: if your name is Jane then the best format is: `dev-jane`.\
-Create the keys in AWS Parameter Store with the right stage name.
-
-To deploy your own **DEV STAGE** in AWS version:
-```sh
-# Deploy:
-$ sls deploy --stage dev-jane
-# Delete completely when you are done:
-$ sls remove --stage dev-jane
-```
+Libs are *not deployed* as they can be (pip-)installed directly from Github o local dir 
+ (see Usage section in each lib's main README.md).\
+And *not versioned* as when (pip-)installing from Github, it is possible to choose
+ any version with a hash commit (see Usage section in each lib's main README.md).
 
 
 ©️ Copyright

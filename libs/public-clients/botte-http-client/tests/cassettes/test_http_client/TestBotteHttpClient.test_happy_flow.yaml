@@ -1,0 +1,79 @@
+interactions:
+- request:
+    body: '{"Name": "/botte-be/prod/api-authorizer-token", "WithDecryption": true}'
+    headers:
+      Authorization:
+      - '**REDACTED**'
+      Content-Length:
+      - '71'
+      Content-Type:
+      - !!binary |
+        YXBwbGljYXRpb24veC1hbXotanNvbi0xLjE=
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS40MC42MiBtZC9Cb3RvY29yZSMxLjQwLjYyIHVhLzIuMSBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCN4ODZfNjQgbGFuZy9weXRob24jMy4xMC4xNiBtZC9weWltcGwjQ1B5dGhvbiBtL0Qs
+        WixuLGIgY2ZnL3JldHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuNDAuNjI=
+    method: POST
+    uri: https://ssm.eu-south-1.amazonaws.com/
+  response:
+    body:
+      string: '{"Parameter": {"ARN": "arn:aws:ssm:eu-south-1:477353422995:parameter/botte-be/prod/api-authorizer-token",
+        "DataType": "text", "LastModifiedDate": 1761419231.611, "Name": "/botte-be/prod/api-authorizer-token",
+        "Type": "SecureString", "Value": "t**REDACTED**", "Version": 1}}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '259'
+      Content-Type:
+      - application/x-amz-json-1.1
+      Date:
+      - Thu, 30 Oct 2025 17:42:37 GMT
+      Server:
+      - Server
+      x-amzn-RequestId:
+      - 57e0599e-d589-4386-9b12-bf45afba32bc
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"text": "Hello world from botte http client pytests!", "sender_app": "BOTTE_HTTP_CLIENT"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - '**REDACTED**'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '90'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-requests/2.32.5
+    method: POST
+    uri: https://5t325uqwq7.execute-api.eu-south-1.amazonaws.com/message
+  response:
+    body:
+      string: '{"message_id": 34263, "from": {"id": 6570886232, "is_bot": true, "first_name":
+        "Botte BOT", "username": "realbottebot"}, "chat": {"id": 2137200685, "first_name":
+        "Paolo", "username": "puntonim", "type": "private"}, "date": 1761846161, "text":
+        "Hello world from botte http client pytests!"}'
+    headers:
+      Apigw-Requestid:
+      - TRZ-NifEsu8EM_g=
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '289'
+      Content-Type:
+      - text/plain; charset=utf-8
+      Date:
+      - Thu, 30 Oct 2025 17:42:41 GMT
+    status:
+      code: 200
+      message: OK
+version: 1
