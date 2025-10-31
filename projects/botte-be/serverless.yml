@@ -64,6 +64,7 @@ functions:
       role:
         statements: []
 
+  # Interface: API Gateway V2.
   endpoint-introspection:
     handler: botte_be.views.endpoint_introspection_view.lambda_handler
     timeout: 5
@@ -82,6 +83,16 @@ functions:
       role:
         statements: []
 
+  # Interface: Lambda direct invocation.
+  message:
+    handler: botte_be.views.message_view.lambda_handler
+    timeout: 28 # Note: API Gateway current maximum is 29 seconds.
+    maximumRetryAttempts: 0
+    iam:
+      role:
+        statements: []
+
+  # Interface: API Gateway V2.
   endpoint-message:
     handler: botte_be.views.endpoint_message_view.lambda_handler
     timeout: 28 # Note: API Gateway current maximum is 29 seconds.

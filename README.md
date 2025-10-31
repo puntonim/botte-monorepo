@@ -25,6 +25,9 @@ In this monorepo there are 2 categories of software:
 ================
 
 The backend, [botte-be project](projects/botte-be), is a set of Lambda functions triggered:
+ - via [Lambda direct invocation](libs/public-clients/botte-lambda-client): used by
+    consumers inside the same AWS account (and with the right permission to invoke
+    the Lambda);
  - via [HTTPS](libs/public-clients/botte-http-client) with a secret auth token: 
     used by any consumer (and maybe, in the future, by Telegram webhook configured for
     Telegram user commands like `/echo`, see the old, and now 
@@ -38,7 +41,7 @@ The backend, [botte-be project](projects/botte-be), is a set of Lambda functions
     project in [patatrack-monorepo](https://github.com/puntonim/patatrack-monorepo)
     that was inside a VPC because it used a SQLite DB in EFS (and EFS requires a VPC).
 
-Each of the 3 interfaces has a client distributed in this repo.
+Each of the interfaces has a client distributed in this repo.
 
 The Telegram's and HTTP's secrets are stored in Parameters Store.
 
@@ -79,15 +82,33 @@ Btw: the solution DynamoDB Table + Stream + Lambda also solves the problem of a 
 
 There are [handy clients](libs/public-clients) for all Botte Backend interfaces.
 
+Lambda Interface
+----------------
+You can use this interface by invoking the Lambda directly in the AWS website,
+ using `aws-cli`, using Python and `boto3`, or with the handy client in this monorepo:
+ [botte-lambda-client](libs/public-clients/botte-lambda-client)
+
+It can be used by AWS infra inside the same AWS account (and with the right permission
+ to invoke the Lambda).
+
+The payload to be sent is:
+```py
+{
+    "text": "Hello world from aws-lambda-client pytests!",
+    "sender_app": "AWS_LAMBDA_CLIENT"  # sender_app is optional.
+}
+```
+
 HTTP Interface
 --------------
-There is a handy client: [botte-http-client](libs/public-clients/botte-http-client)
+You can invoke this interface with curl, any other HTTP client or with the handy client
+ in this monorepo: [botte-http-client](libs/public-clients/botte-http-client)
 
-Without the client, you could use the interface like this:
+Example with curl:
 ```shell
 $ curl -X POST https://5t325uqwq7.execute-api.eu-south-1.amazonaws.com/message \
    -H 'Authorization: XXX' \
-   -d '{"text": "Hello World"}'
+   -d '{"text": "Hello World", "sender_app": "CURL_TEST"}'  # sender_app is optional.
 {
   "message_id": 8,
   "from": {
