@@ -1,0 +1,32 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.32.5
+    method: GET
+    uri: https://5t325uqwq7.execute-api.eu-south-1.amazonaws.com/unhealth
+  response:
+    body:
+      string: '{"message": "Internal Server Error"}'
+    headers:
+      Apigw-Requestid:
+      - TUpCrgv0Mu8EJnQ=
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '35'
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 31 Oct 2025 17:16:13 GMT
+    status:
+      code: 500
+      message: Internal Server Error
+version: 1

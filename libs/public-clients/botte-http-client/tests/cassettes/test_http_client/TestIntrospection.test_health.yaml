@@ -1,0 +1,32 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.32.5
+    method: GET
+    uri: https://5t325uqwq7.execute-api.eu-south-1.amazonaws.com/health
+  response:
+    body:
+      string: '"2025-10-31T17:13:26.330895+00:00"'
+    headers:
+      Apigw-Requestid:
+      - TUooiiviMu8EMfQ=
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '34'
+      Content-Type:
+      - text/plain; charset=utf-8
+      Date:
+      - Fri, 31 Oct 2025 17:13:26 GMT
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -1,0 +1,39 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.32.5
+    method: GET
+    uri: https://5t325uqwq7.execute-api.eu-south-1.amazonaws.com/version
+  response:
+    body:
+      string: '{"appName": "Botte BE", "app": "1.0.0", "python": "3.13.7 (main, Sep
+        26 2025, 14:01:44) [GCC 11.5.0 20240719 (Red Hat 11.5.0-5)]", "boto3": "1.40.4",
+        "botocore": "1.40.4", "pydantic": ["pydantic version: 2.11.7", "pydantic-core
+        version: 2.33.2", "pydantic-core build: profile=release pgo=false", "python
+        version: 3.13.7 (main, Sep 26 2025, 14:01:44) [GCC 11.5.0 20240719 (Red Hat
+        11.5.0-5)]", "platform: Linux-5.10.244-267.968.amzn2.x86_64-x86_64-with-glibc2.34",
+        "related packages: pydantic-settings-2.9.1 typing_extensions-4.14.0", "commit:
+        unknown"], "sqlite3": "3.40.0"}'
+    headers:
+      Apigw-Requestid:
+      - TUo0ogQSsu8EJ-A=
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '574'
+      Content-Type:
+      - text/plain; charset=utf-8
+      Date:
+      - Fri, 31 Oct 2025 17:14:48 GMT
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -23,9 +23,13 @@ import requests
 __all__ = [
     "BotteHttpClient",
     "SendMessageResponse",
+    "SendHealthResponse",
+    "SendUnhealthResponse",
+    "SendVersionResponse",
     "BaseBotteHttpClientException",
     "AuthError",
     "Error404",
+    "NotError500",
     "ParamNotFoundInAwsParamStore",
 ]
 
@@ -39,6 +43,44 @@ BOTTE_BE_API_AUTHORIZER_TOKEN_PATH_IN_PARAM_STORE = (
 class BotteHttpClient:
     def __init__(self, botte_be_api_auth_token: str | None = None):
         self.__botte_be_api_auth_token = botte_be_api_auth_token
+
+    def get_health(self, base_url: str = BOTTE_BE_BASE_URL):
+        url = f"{base_url}/health"
+        response = requests.get(url)
+
+        try:
+            response.raise_for_status()
+        except requests.HTTPError as exc:
+            if response.status_code == 404:
+                raise Error404(f"The url returned 404: {url}") from exc
+            raise
+
+        return SendHealthResponse(response)
+
+    def get_unhealth(self, base_url: str = BOTTE_BE_BASE_URL):
+        url = f"{base_url}/unhealth"
+        response = requests.get(url)
+
+        try:
+            response.raise_for_status()
+        except requests.HTTPError as exc:
+            if response.status_code != 500:
+                raise NotError500(response.status_code) from exc
+
+        return SendUnhealthResponse(response)
+
+    def get_version(self, base_url: str = BOTTE_BE_BASE_URL):
+        url = f"{base_url}/version"
+        response = requests.get(url)
+
+        try:
+            response.raise_for_status()
+        except requests.HTTPError as exc:
+            if response.status_code == 404:
+                raise Error404(f"The url returned 404: {url}") from exc
+            raise
+
+        return SendVersionResponse(response)
 
     def send_message(
         self,
@@ -149,6 +191,24 @@ class SendMessageResponse(BaseJsonResponse):
     data: dict[str, Any]
 
 
+class SendHealthResponse(BaseJsonResponse):
+    # IMP: do NOT assign values to INSTANCE attrs here at class-level, but only type
+    #  annotations. If you assign values they become CLASS attrs.
+    data: str
+
+
+class SendUnhealthResponse(BaseJsonResponse):
+    # IMP: do NOT assign values to INSTANCE attrs here at class-level, but only type
+    #  annotations. If you assign values they become CLASS attrs.
+    data: dict[str, str]
+
+
+class SendVersionResponse(BaseJsonResponse):
+    # IMP: do NOT assign values to INSTANCE attrs here at class-level, but only type
+    #  annotations. If you assign values they become CLASS attrs.
+    data: dict[str, Any]
+
+
 class BaseBotteHttpClientException(Exception): ...
 
 
@@ -159,6 +219,14 @@ class Error404(BaseBotteHttpClientException):
     def __init__(self, url: str):
         self.url = url
         super().__init__(f"404 error for: {url}")
+
+
+class NotError500(BaseBotteHttpClientException):
+    def __init__(self, status_code: int):
+        self.status_code = status_code
+        super().__init__(
+            f"We were expecting a 500 error, instead we got: {status_code}"
+        )
 
 
 class ParamNotFoundInAwsParamStore(BaseBotteHttpClientException):
