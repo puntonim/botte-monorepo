@@ -39,6 +39,12 @@ test = [
     # VCR.py integration with pytest.
     "pytest-recording (>=0.13.4)"
 ]
+test-e2e = [
+    "pytest (>=8.4.2,<9.0.0)",
+    "pytest-xdist[psutil] (>=3.8.0,<4.0.0)",
+    "botte-http-client @ file:///Users/nimiq/workspace/botte-monorepo/libs/public-clients/botte-http-client",
+    "botte-lambda-client @ file:///Users/nimiq/workspace/botte-monorepo/libs/public-clients/botte-lambda-client",
+]
 
 [tool.ruff]
 line-length = 88  # Default.

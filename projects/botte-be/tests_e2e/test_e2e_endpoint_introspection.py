@@ -1,25 +1,34 @@
-import requests
+import botte_http_client
 
 
 class TestE2eEndpointIntrospection:
-    def test_version(self, base_url):
-        url = f"{base_url}/version"
-        response = requests.get(url)
-        response.raise_for_status()
-        assert response.json()
+    def test_version(self):
+        client = botte_http_client.BotteHttpClient()
+        response = client.get_version()
+        # response.data like:
         # {
-        #     "appName": "Botte",
-        #     "app": "0.1.0",
-        #     "python": "3.11.6 (main, Oct  2 2023, 18:13:32) [GCC 7.3.1 20180712 (Red Hat 7.3.1-17)]",
-        #     "boto3": "1.27.1",
-        #     "botocore": "1.30.1",
+        #     "appName": "Botte BE",
+        #     "app": "1.0.0",
+        #     "python": "3.13.7 (main, Sep 26 2025, 14:01:44) [GCC 11.5.0 20240719 (Red Hat 11.5.0-5)]",
+        #     "boto3": "1.40.4",
+        #     "botocore": "1.40.4",
+        #     "pydantic": [
+        #         "pydantic version: 2.11.7",
+        #         "pydantic-core version: 2.33.2",
+        #         "pydantic-core build: profile=release pgo=false",
+        #         "python version: 3.13.7 (main, Sep 26 2025, 14:01:44) [GCC 11.5.0 20240719 (Red Hat 11.5.0-5)]",
+        #         "platform: Linux-5.10.244-267.968.amzn2.x86_64-x86_64-with-glibc2.34",
+        #         "related packages: pydantic-settings-2.9.1 typing_extensions-4.14.0",
+        #         "commit: unknown",
+        #     ],
+        #     "sqlite3": "3.40.0",
         # }
-        assert response.json()["appName"] == "Botte BE"
+        assert response.data["appName"] == "Botte BE"
 
     # @pytest.mark.skip(
     #     reason="Don't always run this as it causes the sending of an email"
     # )
-    def test_lambda_to_raise_exception_and_email_sent(self, base_url):
-        url = f"{base_url}/unhealth"
-        response = requests.get(url)
-        assert response.status_code == 500
+    def test_unhealth(self):
+        client = botte_http_client.BotteHttpClient()
+        response = client.get_unhealth()
+        assert response.data["message"] == "Internal Server Error"

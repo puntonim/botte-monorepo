@@ -1,41 +1,41 @@
-import requests
+import botte_http_client
+import pytest
 
 
 class TestE2eEndpointMessage:
-    def test_happy_flow(self, base_url, http_auth_header):
-        url = f"{base_url}/message"
-        body = {
+    def setup_method(self):
+        self.data = {
             "text": "Hello from (botte-monorepo) Botte BE e2e tests for endpoint message",
             "sender_app": "E2E_TESTS_IN_BOTTE_BE",  # `sender_app` is optional.
         }
-        response = requests.post(url, json=body, headers=http_auth_header)
-        response.raise_for_status()
-        assert response.json()
+
+    def test_happy_flow(self):
+        client = botte_http_client.BotteHttpClient()
+        response = client.send_message(**self.data)
+        # response.data is like:
         # {
-        #     "message_id": 157,
+        #     "message_id": 34268,
         #     "from": {
         #         "id": 6570886232,
         #         "is_bot": True,
-        #         "first_name": "Botte",
+        #         "first_name": "Botte BOT",
         #         "username": "realbottebot",
         #     },
         #     "chat": {
         #         "id": 2137200685,
         #         "first_name": "Paolo",
-        #         "username": "punto...",
+        #         "username": "puntonim",
         #         "type": "private",
         #     },
-        #     "date": 1698760722,
-        #     "text": "Hello from Botte tests e2e",
+        #     "date": 1761929375,
+        #     "text": "Hello from (botte-monorepo) Botte BE e2e tests for endpoint message",
         # }
-        assert response.json()["text"] == body["text"]
+        assert response.data["text"] == self.data["text"]
 
-    def test_no_auth(self, base_url):
-        url = f"{base_url}/message"
-        body = {"text": "Hello from Botte tests e2e"}
-        headers = {"Authorization": "XXX"}
-        response = requests.post(url, json=body, headers=headers)
-        assert response.status_code == 403
+    def test_no_auth(self):
+        client = botte_http_client.BotteHttpClient(botte_be_api_auth_token="XXX")
+        with pytest.raises(botte_http_client.AuthError):
+            client.send_message(**self.data)
 
     # There is no way to test the raising of an exception.
     # Maybe I can add a custom HTTP header, read it in the Lambda source code and
@@ -43,7 +43,5 @@ class TestE2eEndpointMessage:
     # @pytest.mark.skip(
     #     reason="Don't always run this as it causes the sending of an email"
     # )
-    # def test_lambda_to_raise_exception_and_email_sent(
-    #     self, base_url, auth_header
-    # ):
+    # def test_lambda_to_raise_exception_and_email_sent(self):
     #     pass

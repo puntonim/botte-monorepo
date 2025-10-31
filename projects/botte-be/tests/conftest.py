@@ -157,23 +157,27 @@ def before_record_response(response):
     except json.JSONDecodeError:
         return response
 
+    if not data:
+        return response
+
     # Redact access token (general rule).
     if "access_token" in data:
         data["access_token"] = "**REDACTED**"
 
     # Redact AWS Parameter Store secrets.
-    value = data.get("Parameter", {}).get("Value")
-    # Special case: redact the Telegram token, but keep the part before ":" (which is
-    #  the userid) otherwise the telebot lib fails.
-    if (
-        value
-        and data.get("Parameter", {}).get("Name", "").endswith("telegram-token")
-        and ":" in value
-    ):
-        data["Parameter"]["Value"] = value[: value.find(":") + 1] + "**REDACTED**"
+    if isinstance(data, dict):
+        value = data.get("Parameter", {}).get("Value")
+        # Special case: redact the Telegram token, but keep the part before ":" (which is
+        #  the userid) otherwise the telebot lib fails.
+        if (
+            value
+            and data.get("Parameter", {}).get("Name", "").endswith("telegram-token")
+            and ":" in value
+        ):
+            data["Parameter"]["Value"] = value[: value.find(":") + 1] + "**REDACTED**"
 
-    elif value and data.get("Parameter", {}).get("Type") == "SecureString":
-        data["Parameter"]["Value"] = value[:1] + "**REDACTED**"
+        elif value and data.get("Parameter", {}).get("Type") == "SecureString":
+            data["Parameter"]["Value"] = value[:1] + "**REDACTED**"
 
     # Re-encode JSON body.
     response["body"]["string"] = json.dumps(data).encode()
