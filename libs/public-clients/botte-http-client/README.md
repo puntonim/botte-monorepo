@@ -12,9 +12,15 @@
 ⚡ Usage
 =======
 
+Use this client to interact with Botte, via HTTP.\
+Do not use this in AWS services, but rather prefer `botte-lambda-client`.
+
 See top docstring in [http_client.py](botte_http_client/http_client.py).
 
 Also, see details of the HTTP interface in [README.md](../../../README.md) in the root dir.
+
+*Note: if you need a Botte client to be used in a AWS service, use 
+ [botte-lambda-client](../botte-lambda-client) instead, for a direct Lambda invocation*.
 
 Poetry install
 --------------

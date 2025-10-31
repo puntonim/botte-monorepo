@@ -26,12 +26,13 @@ In this monorepo there are 2 categories of software:
 
 The backend, [botte-be project](projects/botte-be), is a set of Lambda functions triggered:
  - via [Lambda direct invocation](libs/public-clients/botte-lambda-client): used by
-    consumers inside the same AWS account (and with the right permission to invoke
-    the Lambda);
+    consumers in AWS services inside the same AWS account (and with the right 
+    permission to invoke the Lambda);
  - via [HTTPS](libs/public-clients/botte-http-client) with a secret auth token: 
     used by any consumer (and maybe, in the future, by Telegram webhook configured for
     Telegram user commands like `/echo`, see the old, and now 
-    archived [patatrack-monorepo](https://github.com/puntonim/patatrack-monorepo);
+    archived [patatrack-monorepo](https://github.com/puntonim/patatrack-monorepo); do not use this in a AWS service, but rather
+    prefer the Lambda direct invocation;
  - via [SQS task Queue](libs/public-clients/botte-sqs-client): no consumers yet - 
     COMMENTED OUT because it incurs a little cost;
  - via [DynamoDB task Table](libs/public-clients/botte-dynamodb-client): used by Lambda

@@ -2,6 +2,9 @@
 ** BOTTE HTTP CLIENT **
 =======================
 
+Use this client to interact with Botte, via HTTP.\
+Do not use this in AWS services, but rather prefer `botte-lambda-client`.
+
 ```py
 import botte_http_client
 
@@ -25,6 +28,7 @@ __all__ = [
     "Error404",
     "ParamNotFoundInAwsParamStore",
 ]
+
 # Note: these might change in case of Botte Backend destroy and re-deploy.
 BOTTE_BE_BASE_URL = "https://5t325uqwq7.execute-api.eu-south-1.amazonaws.com"
 BOTTE_BE_API_AUTHORIZER_TOKEN_PATH_IN_PARAM_STORE = (
