@@ -1,6 +1,6 @@
 <p align="center">
   <h1 align="center">
-    🌐 Botte monorepo: Botte Lambda client
+    🟠 Botte monorepo: Botte Lambda client
   </h1>
   <p align="center">
     Just a client for Botte Backend direct Lambda invocation interface.
@@ -12,8 +12,15 @@
 ⚡ Usage
 =======
 
-Use this client to interact with Botte, in AWS services inside the same AWS account
- (and with the right permission to invoke the Lambda).
+This Botte Lambda client is the preferred client to interact with Botte, when the
+ consumer:
+ - is running inside AWS infra, in the same AWS account as Botte (otherwise use [botte-http-client](../botte-http-client)))
+ - can invoke Botte Lambdas: fi. if the consumer is in a VPC with no connection to
+    other AWS services nor Internet access then it cannot invoke Botte Lambdas (in
+    this case use [botte-dynamodb-client](../botte-dynamodb-client))
+
+Note: you might need to set the right policy to allow the consumer to invoke Botte 
+ Lambdas.
 
 See top docstring in [http_client.py](botte_lambda_client/lambda_client.py).
 

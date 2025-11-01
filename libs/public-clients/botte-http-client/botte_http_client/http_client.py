@@ -2,8 +2,10 @@
 ** BOTTE HTTP CLIENT **
 =======================
 
-Use this client to interact with Botte, via HTTP.\
-Do not use this in AWS services, but rather prefer `botte-lambda-client`.
+This Botte HTTP client is the preferred client to interact with Botte, when the
+ consumer:
+ - has Internet access
+ - and is NOT running inside AWS infra or NOT the same AWS account as Botte (otherwise prefer `botte-lambda-client`
 
 ```py
 import botte_http_client
