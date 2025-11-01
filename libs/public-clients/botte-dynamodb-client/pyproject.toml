@@ -1,0 +1,60 @@
+[project]
+name = "botte-dynamodb-client"
+description = "Botte Monorepo: Botte DynamoDB Client"
+authors = [
+    {name = "puntonim", email = "puntonim@gmail.com"}
+]
+readme = "README.md"
+license = "no license"
+version = "1.0.0"
+requires-python = ">=3.10,<4.0"  # <4.0 reuired by botte-dynamodb-tasks (required by aws-utils, required by the optional extra Lambda Powertools).
+dependencies = [
+    "aws-dynamodb-client @ git+https://github.com/puntonim/clients-monorepo#subdirectory=aws-dynamodb-client",
+    "botte-dynamodb-tasks @ ../../botte-dynamodb-tasks",
+    "datetime-utils @ git+https://github.com/puntonim/utils-monorepo#subdirectory=datetime-utils"
+]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[dependency-groups]
+dev = [
+    "ipdb (>=0.13.13)",
+    # Python linter and formatter.
+    "ruff (==0.14.2)",  # Must be the same as in .pre-commit-config.yaml.
+]
+test = [
+    "pytest (>=8.4.2,<9.0.0)",
+    "pytest-xdist[psutil] (>=3.8.0,<4.0.0)",
+    # VCR.py integration with pytest.
+    "pytest-recording (>=0.13.4)",
+    "svix-ksuid (>=0.6.2,<0.7.0)",
+]
+
+[tool.ruff]
+line-length = 88  # Default.
+extend-exclude = ["docs"]
+
+[tool.ruff.format]
+quote-style = "double"  # Default.
+
+[tool.ruff.lint]
+select = [
+    # pycodestyle
+    "E",
+    # Pyflakes
+    "F",
+    # pyupgrade
+    "UP",
+    # flake8-bugbear
+    "B",
+    # flake8-simplify
+    "SIM",
+    # isort
+    "I",
+]
+ignore = [
+    # E501 Line too long: let the ruff formatter take care long lines.
+    "E501",
+]

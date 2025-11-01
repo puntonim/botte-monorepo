@@ -2,8 +2,15 @@
 ** BOTTE LAMBDA CLIENT **
 =========================
 
-Use this client to interact with Botte, in AWS services inside the same AWS account
- (and with the right permission to invoke the Lambda).
+This Botte Lambda client is the preferred client to interact with Botte, when the
+ consumer:
+ - is running inside AWS infra, in the same AWS account as Botte (otherwise use `botte-http-client`)
+ - can invoke Botte Lambdas: fi. if the consumer is in a VPC with no connection to
+    other AWS services nor Internet access then it cannot invoke Botte Lambdas (in
+    this case use `botte-dynamodb-client`)
+
+Note: you might need to set the right policy to allow the consumer to invoke Botte
+ Lambdas.
 
 ```py
 import botte_lambda_client
