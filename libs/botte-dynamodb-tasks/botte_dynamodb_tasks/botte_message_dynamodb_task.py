@@ -117,8 +117,8 @@ class BotteMessageDynamodbTask:
         """
         Used by consumers to build the DynamoDB Item to INSERT.
 
-        Using dynamodb-client lib (which uses Boto3 lib) this dict is converted
-         to this JSON:
+        Using `aws-dynamodb-client` lib (which uses Boto3 lib) this dict will be
+         converted to this JSON:
             {
                 "PK": {
                     "S": "BOTTE_MESSAGE"
@@ -174,7 +174,6 @@ class BotteMessageDynamodbTask:
             raise exceptions.ValidationError(
                 f"ExpirationTs must be int timestamp: {self.expiration_ts}"
             ) from exc
-
         return data
 
     @lru_cache  # noqa: B019
@@ -185,42 +184,53 @@ class BotteMessageDynamodbTask:
     def _make_from_record(record: dict) -> "BotteMessageDynamodbTask":
         """
         Record format:
-            {
-                "eventID": "ff29711457aeb0372bc2a89d8edd7098",
-                "eventName": "INSERT",
-                "eventVersion": "1.1",
-                "eventSource": "aws:dynamodb",
-                "awsRegion": "eu-south-1",
-                "dynamodb": {
-                    "ApproximateCreationDateTime": 1698673253,
-                    "Keys": {
-                        "TaskId": {
-                            "S": "BOTTE_MESSAGE"
-                        },
-                        "Text": {
-                            "S": "2023-10-29T13:22:56.252653+00:00#Hello world from Dynamo!!"
-                        }
+        {
+            "eventID": "4d2ea43eb5fd2c78ef00c1ab5f403cb9",
+            "eventName": "INSERT",
+            "eventVersion": "1.1",
+            "eventSource": "aws:dynamodb",
+            "awsRegion": "eu-south-1",
+            "dynamodb": {
+                "ApproximateCreationDateTime": 1762018140,
+                "Keys": {
+                    "SK": {
+                        "S": "34t1cou0pVRlvW8OECP0J1Q4nJC"
                     },
-                    "NewImage": {
-                        "TaskId": {
-                            "S": "BOTTE_MESSAGE"
-                        },
-                        "ExpirationTs": {
-                            "N": "1698672903"
-                        },
-                        "Text": {
-                            "S": "2023-10-29T13:22:56.252653+00:00#Hello world from Dynamo!!"
-                        }
-                    },
-                    "SequenceNumber": "45400000000013380201987",
-                    "SizeBytes": 180,
-                    "StreamViewType": "NEW_IMAGE"
+                    "PK": {
+                        "S": "BOTTE_MESSAGE"
+                    }
                 },
-                "eventSourceARN": "arn:aws:dynamodb:eu-south-1:477353422995:table/patatrack-botte-message-db-queue-production/stream/2023-10-30T13:38:23.986"
-            }
+                "NewImage": {
+                    "SenderApp": {
+                        "S": "E2E_TESTS_IN_BOTTE_BE"
+                    },
+                    "TaskId": {
+                        "S": "BOTTE_MESSAGE"
+                    },
+                    "ExpirationTs": {
+                        "N": "1762018136"
+                    },
+                    "SK": {
+                        "S": "34t1cou0pVRlvW8OECP0J1Q4nJC"
+                    },
+                    "Payload": {
+                        "M": {
+                            "text": {
+                                "S": "Hello from (botte-monorepo) Botte BE e2e tests for Dynamodb message"
+                            }
+                        }
+                    },
+                    "PK": {
+                        "S": "BOTTE_MESSAGE"
+                    }
+                },
+                "SequenceNumber": "4444500001357803510521810",
+                "SizeBytes": 237,
+                "StreamViewType": "NEW_IMAGE"
+            },
+            "eventSourceARN": "arn:aws:dynamodb:eu-south-1:477353422995:table/botte-be-task-prod/stream/2025-10-31T18:41:51.551"
+        }
         """
-        # TODO update docstring after inspecting the endpoint.
-
         event_name = record.get("eventName")
         if event_name != "INSERT":
             raise exceptions.ValidationError(

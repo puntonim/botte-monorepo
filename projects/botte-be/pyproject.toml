@@ -14,6 +14,7 @@ dependencies = [
     "datetime-utils @ git+https://github.com/puntonim/utils-monorepo#subdirectory=datetime-utils",
     "log-utils @ git+https://github.com/puntonim/utils-monorepo#subdirectory=log-utils",
     "settings-utils[get-from-aws-param-store] @ git+https://github.com/puntonim/utils-monorepo#subdirectory=settings-utils",
+    "botte-dynamodb-tasks @ ../../libs/botte-dynamodb-tasks",
 ]
 
 [build-system]
@@ -42,8 +43,9 @@ test = [
 test-e2e = [
     "pytest (>=8.4.2,<9.0.0)",
     "pytest-xdist[psutil] (>=3.8.0,<4.0.0)",
-    "botte-http-client @ file:///Users/nimiq/workspace/botte-monorepo/libs/public-clients/botte-http-client",
-    "botte-lambda-client @ file:///Users/nimiq/workspace/botte-monorepo/libs/public-clients/botte-lambda-client",
+    "botte-http-client @ ../../libs/public-clients/botte-http-client",
+    "botte-lambda-client @ ../../libs/public-clients/botte-lambda-client",
+    "botte-dynamodb-client @ ../../libs/public-clients/botte-dynamodb-client",
 ]
 
 [tool.ruff]

@@ -8,7 +8,7 @@ class TestE2eLambdaInvokMessage:
 
     def setup_method(self):
         self.data = {
-            "text": "Hello from (botte-monorepo) Botte BE e2e tests for Lambda direct invocation message",
+            "text": "Hello from (botte-monorepo) botte-be e2e tests for Lambda direct invocation message",
             "sender_app": "E2E_TESTS_IN_BOTTE_BE",  # `sender_app` is optional.
         }
 

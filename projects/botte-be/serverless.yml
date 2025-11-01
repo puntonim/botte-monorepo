@@ -107,6 +107,43 @@ functions:
       role:
         statements: []
 
+  # Interface: DynamoDB task queue.
+  dynamodb-message:
+    handler: botte_be.views.dynamodb_message_view.lambda_handler
+    timeout: 28
+    maximumRetryAttempts: 0
+    events:
+      - stream:
+          type: dynamodb
+          arn: !GetAtt DynamodbTaskTable.StreamArn # Created down here in `resources`.
+          filterPatterns:
+            # Only INSERT events (not UPDATE, DELETE, etc) where TaskId=BOTTE_MESSAGE.
+            - eventName: [INSERT]
+              dynamodb:
+                NewImage:
+                  TaskId:
+                    S: [BOTTE_MESSAGE]
+          startingPosition: LATEST
+          batchSize: 100 # Max batch size.
+          batchWindow: 3 # Seconds to wait (while collecting the batch) before invoking Lambda.
+          maximumRetryAttempts: 0
+          parallelizationFactor: 10 # Max 10 concurrent Lambdas per shard (10 is the max).
+          enabled: true
+          # TODO aws-watchdog
+          #destinations:
+          #  # For discarded records: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-eventsourcemapping.html#aws-resource-lambda-eventsourcemapping-properties
+          #  onFailure:
+          #    arn: ${self:custom.serverlessBase.resources.sharedInfra.SnsErrorTopicArn}
+          #    type: sns
+    iam:
+      role:
+        statements: []
+          # TODO aws-watchdog
+          #- Effect: Allow
+          #  Action:
+          #    - sns:Publish
+          #  Resource: ${self:custom.serverlessBase.resources.sharedInfra.SnsErrorTopicArn}
+
 
 package:
   # `individually: true` should only be used for a project with multiple modules each with their own specific dependencies.
@@ -143,3 +180,40 @@ custom:
 resources:
   # Set the description in the CloudFormation stack.
   Description: Managed by Serverless at ${self:custom.source}
+
+  Resources:
+    # DynamoDB task Table that triggers Botte Backend.
+    # Docs: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-dynamodb-table.html
+    DynamodbTaskTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: "PK"
+            AttributeType: "S"
+          - AttributeName: "SK"
+            AttributeType: "S"
+          # Do NOT specify extra attrs here.
+        KeySchema:
+          - AttributeName: "PK"
+            KeyType: "HASH"
+          - AttributeName: "SK"
+            KeyType: "RANGE"
+        BillingMode: PAY_PER_REQUEST
+        StreamSpecification:
+            StreamViewType: NEW_IMAGE
+        TableClass: STANDARD
+        TableName: botte-be-task-${sls:stage}
+        TimeToLiveSpecification:
+          AttributeName: ExpirationTs
+          Enabled: true
+        Tags:
+          - Key: project
+            Value: ${self:provider.tags.project}
+          - Key: environment
+            Value: ${self:provider.tags.environment}
+          - Key: managed-with
+            Value: ${self:provider.tags.managed-with}
+          - Key: monorepo
+            Value: ${self:provider.tags.monorepo}
+          - Key: source
+            Value: ${self:provider.tags.source}
