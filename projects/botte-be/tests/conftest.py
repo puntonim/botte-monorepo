@@ -10,7 +10,7 @@ from aws_parameter_store_client import aws_parameter_store_client
 from vcr.cassette import Cassette
 from vcr.errors import CannotOverwriteExistingCassetteException
 
-from botte_be.conf.settings import _TestSettings, settings
+from botte_be.conf import settings_module
 from botte_be.views.views_utils import powertools_logger
 
 IS_VCR_EPISODE_OR_ERROR = True  # False to record new cassettes.
@@ -54,17 +54,9 @@ def pytest_configure(config):
     config.addinivalue_line("markers", "slow: slow test")
 
 
-@pytest.fixture(autouse=True, scope="function")
-def test_settings_fixture(monkeypatch, request):
-    # Copy all test settings to settings.
-    attr_names = [
-        attr
-        for attr in dir(_TestSettings)
-        if not callable(getattr(_TestSettings, attr)) and not attr.startswith("__")
-    ]
-    for attr_name in attr_names:
-        attr_value = getattr(_TestSettings, attr_name)
-        setattr(settings, attr_name, attr_value)
+@pytest.fixture(autouse=True, scope="session")
+def test_settings_fixture():
+    settings_module.IS_TEST = True
 
 
 _ORIGINAL_LOG_LEVEL = None

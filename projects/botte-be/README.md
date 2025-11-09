@@ -158,7 +158,7 @@ $ node -v > .nvmrc
 ```
 Follow the [install instructions](https://serverless.com/framework/docs/getting-started#install-as-a-standalone-binary)
 for Serverless, something like `curl -o- -L https://slss.io/install | bash`.
-We currently use version 3.12.0, if you have an older major version you can upgrade Serverless with: `sls upgrade --major`.
+We currently use version 4.23.0, if you have an older major version you can upgrade Serverless with: `sls upgrade --major`.
 
 Then to install the Serverless plugins required:
 ```shell

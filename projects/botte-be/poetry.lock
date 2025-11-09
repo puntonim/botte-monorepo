@@ -115,7 +115,7 @@ version = "1.0.0"
 description = "Clients Monorepo: AWS Parameter Store Client"
 optional = false
 python-versions = ">=3.10"
-groups = ["main", "test-e2e"]
+groups = ["test", "test-e2e"]
 files = []
 develop = false
 
@@ -162,7 +162,7 @@ version = "1.40.4"
 description = "The AWS SDK for Python"
 optional = false
 python-versions = ">=3.9"
-groups = ["main", "dev", "test-e2e"]
+groups = ["main", "dev", "test", "test-e2e"]
 files = [
     {file = "boto3-1.40.4-py3-none-any.whl", hash = "sha256:95cdc86454e9ff43e0693c5d807a54ce6813b6711d3543a0052ead5216b93367"},
     {file = "boto3-1.40.4.tar.gz", hash = "sha256:6eceffe4ae67c2cb077574289c0efe3ba60e8446646893a974fc3c2fa1130e7c"},
@@ -182,7 +182,7 @@ version = "1.40.4"
 description = "Low-level, data-driven core of boto 3."
 optional = false
 python-versions = ">=3.9"
-groups = ["main", "dev", "test-e2e"]
+groups = ["main", "dev", "test", "test-e2e"]
 files = [
     {file = "botocore-1.40.4-py3-none-any.whl", hash = "sha256:4e131c52731e10a6af998c2ac3bfbda12e6ecef0e3633268c7752d0502c74197"},
     {file = "botocore-1.40.4.tar.gz", hash = "sha256:f1dacde69ec8b08f39bcdb62247bab4554938b5d7f8805ade78447da55c9df36"},
@@ -297,7 +297,7 @@ version = "1.0.0"
 description = "Utils Monorepo: Cache Utils"
 optional = false
 python-versions = ">=3.10"
-groups = ["main", "test-e2e"]
+groups = ["test", "test-e2e"]
 files = []
 develop = false
 
@@ -1165,7 +1165,7 @@ version = "1.0.1"
 description = "JSON Matching Expressions"
 optional = false
 python-versions = ">=3.7"
-groups = ["main", "dev", "test-e2e"]
+groups = ["main", "dev", "test", "test-e2e"]
 files = [
     {file = "jmespath-1.0.1-py3-none-any.whl", hash = "sha256:02e2e4cc71b5bcab88332eebf907519190dd9e6e82107fa7f83b1003a6252980"},
     {file = "jmespath-1.0.1.tar.gz", hash = "sha256:90261b206d6defd58fdd5e85f478bf633a2901798906be2ad389150c5c60edbe"},
@@ -2039,7 +2039,7 @@ version = "2.9.0.post0"
 description = "Extensions to the standard Python datetime module"
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,>=2.7"
-groups = ["main", "dev", "test-e2e"]
+groups = ["main", "dev", "test", "test-e2e"]
 files = [
     {file = "python-dateutil-2.9.0.post0.tar.gz", hash = "sha256:37dd54208da7e1cd875388217d5e00ebd4179249f90fb72437e91a35459a0ad3"},
     {file = "python_dateutil-2.9.0.post0-py2.py3-none-any.whl", hash = "sha256:a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427"},
@@ -2312,7 +2312,7 @@ version = "0.13.1"
 description = "An Amazon S3 Transfer Manager"
 optional = false
 python-versions = ">=3.9"
-groups = ["main", "dev", "test-e2e"]
+groups = ["main", "dev", "test", "test-e2e"]
 files = [
     {file = "s3transfer-0.13.1-py3-none-any.whl", hash = "sha256:a981aa7429be23fe6dfc13e80e4020057cbab622b08c0315288758d67cabc724"},
     {file = "s3transfer-0.13.1.tar.gz", hash = "sha256:c3fdba22ba1bd367922f27ec8032d6a1cf5f10c934fb5d68cf60fd5a23d936cf"},
@@ -2347,7 +2347,7 @@ version = "1.0.0"
 description = "Utils Monorepo: Settings Utils"
 optional = false
 python-versions = ">=3.10"
-groups = ["main"]
+groups = ["main", "test"]
 files = []
 develop = false
 
@@ -2361,7 +2361,7 @@ get-from-aws-param-store = ["aws-parameter-store-client @ git+https://github.com
 type = "git"
 url = "https://github.com/puntonim/utils-monorepo"
 reference = "HEAD"
-resolved_reference = "f8feffa2c2ff37840749d1bf0a2c1b9eda26bff9"
+resolved_reference = "571261cbf3b607aa9562a8871a1a4daf736e307e"
 subdirectory = "settings-utils"
 
 [[package]]
@@ -2382,7 +2382,7 @@ version = "1.17.0"
 description = "Python 2 and 3 compatibility utilities"
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,>=2.7"
-groups = ["main", "dev", "test-e2e"]
+groups = ["main", "dev", "test", "test-e2e"]
 files = [
     {file = "six-1.17.0-py2.py3-none-any.whl", hash = "sha256:4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274"},
     {file = "six-1.17.0.tar.gz", hash = "sha256:ff70335d468e7eb6ec65b95b99d3a2836546063f63acc5171de367e834932a81"},
@@ -3027,4 +3027,4 @@ cffi = ["cffi (>=1.17,<2.0) ; platform_python_implementation != \"PyPy\" and pyt
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.13,<4"
-content-hash = "d0a1031dab06af40b5e968d38f3c87a06de8c88e5a0126c85afc93b2ab1998a1"
+content-hash = "5c869c9fb7b2c1e2e4408fcb4d8a30c4c0f5851078ca966910059806b3277a75"

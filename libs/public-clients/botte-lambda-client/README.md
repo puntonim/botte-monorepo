@@ -22,7 +22,7 @@ This Botte Lambda client is the preferred client to interact with Botte, when th
 Note: you might need to set the right policy to allow the consumer to invoke Botte 
  Lambdas.
 
-See top docstring in [http_client.py](botte_lambda_client/lambda_client.py).
+See top docstring in [lambda_client.py](botte_lambda_client/lambda_client.py).
 
 Poetry install
 --------------
