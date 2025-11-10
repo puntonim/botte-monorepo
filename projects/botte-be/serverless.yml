@@ -1,3 +1,5 @@
+# Serverless version 4.23.0.
+
 # Docs:
 #  - Serverless for AWS full specs: https://www.serverless.com/framework/docs/providers/aws/guide/serverless.yml/
 #  - Python reqs: https://www.serverless.com/framework/docs/providers/aws/guide/python
@@ -63,8 +65,14 @@ functions:
     iam:
       role:
         statements: []
+    # *Commented-out as this Lambda is with SYNC invocation.*
+    # DLQ only for ASYNC invocations: set, as DLQ, the SNS topic in aws-watchdog that
+    #  sends emails to me.
+    # Note: Lambda sync/async invocations examples:
+    #  - ASYNC: S3, SNS, SQS, CloudWatch Logs, EventBridge Scheduler, aws cli, etc.
+    #  - SYNC: API Gateway, aws cli, etc.
+    # onError: ${self:custom.awsWatchdogSnsErrorsArn}
 
-  # Interface: API Gateway V2.
   endpoint-introspection:
     handler: botte_be.views.endpoint_introspection_view.lambda_handler
     timeout: 5
@@ -82,8 +90,16 @@ functions:
     iam:
       role:
         statements: []
+    # *Commented-out as this Lambda is with SYNC invocation (API Gateway).*
+    # DLQ only for ASYNC invocations: set, as DLQ, the SNS topic in aws-watchdog that
+    #  sends emails to me.
+    # Note: Lambda sync/async invocations examples:
+    #  - ASYNC: S3, SNS, SQS, CloudWatch Logs, EventBridge Scheduler, aws cli, etc.
+    #  - SYNC: API Gateway, aws cli, etc.
+    # onError: ${self:custom.awsWatchdogSnsErrorsArn}
 
-  # Interface: Lambda direct invocation.
+  #### Interface: Lambda direct invocation #############################################
+  # IMP: do not rename it as it used in `libs/public-clients/botte-lambda-client`.
   message:
     handler: botte_be.views.message_view.lambda_handler
     timeout: 28 # Note: API Gateway current maximum is 29 seconds.
@@ -91,8 +107,15 @@ functions:
     iam:
       role:
         statements: []
+    # This invocation can be sync or async, both are possible.
+    # DLQ only for ASYNC invocations: set, as DLQ, the SNS topic in aws-watchdog that
+    #  sends emails to me.
+    # Note: Lambda sync/async invocations examples:
+    #  - ASYNC: S3, SNS, SQS, CloudWatch Logs, EventBridge Scheduler, aws cli, etc.
+    #  - SYNC: API Gateway, aws cli, etc.
+    onError: ${self:custom.awsWatchdogSnsErrorsArn}
 
-  # Interface: API Gateway V2.
+  #### Interface: API Gateway V2 #######################################################
   endpoint-message:
     handler: botte_be.views.endpoint_message_view.lambda_handler
     timeout: 28 # Note: API Gateway current maximum is 29 seconds.
@@ -106,13 +129,22 @@ functions:
     iam:
       role:
         statements: []
+    # *Commented-out as this Lambda is with SYNC invocation (API Gateway).*
+    # DLQ only for ASYNC invocations: set, as DLQ, the SNS topic in aws-watchdog that
+    #  sends emails to me.
+    # Note: Lambda sync/async invocations examples:
+    #  - ASYNC: S3, SNS, SQS, CloudWatch Logs, EventBridge Scheduler, aws cli, etc.
+    #  - SYNC: API Gateway, aws cli, etc.
+    # onError: ${self:custom.awsWatchdogSnsErrorsArn}
 
-  # Interface: DynamoDB task queue.
+  #### Interface: DynamoDB task queue ##################################################
   dynamodb-message:
     handler: botte_be.views.dynamodb_message_view.lambda_handler
     timeout: 28
     maximumRetryAttempts: 0
     events:
+      # This stream is an AWS::Lambda::EventSourceMapping.
+      # Docs: https://docs.aws.amazon.com/AWSCloudFormation/latest/TemplateReference/aws-resource-lambda-eventsourcemapping.html
       - stream:
           type: dynamodb
           arn: !GetAtt DynamodbTaskTable.StreamArn # Created down here in `resources`.
@@ -129,20 +161,37 @@ functions:
           maximumRetryAttempts: 0
           parallelizationFactor: 10 # Max 10 concurrent Lambdas per shard (10 is the max).
           enabled: true
-          # TODO aws-watchdog
-          #destinations:
-          #  # For discarded records: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-eventsourcemapping.html#aws-resource-lambda-eventsourcemapping-properties
-          #  onFailure:
-          #    arn: ${self:custom.serverlessBase.resources.sharedInfra.SnsErrorTopicArn}
-          #    type: sns
+          destinations:
+            # Send discarded records, after maximumRetryAttempts, to aws-watchdog (that
+            #  sends emails to me).
+            # Note: I tested this by adding a 1/0 in the source code of the view and
+            #  received both the log from aws-watchdog and the failed DynamoDB event.
+            #  Note: I also tried to test failed invocations by manually deleting the
+            #  Lambda from AWS web console after having deployed this Serverless file,
+            #  but it did not work. I also tried to test it by changing this settings in
+            #  AWS web console: Configuration > Concurrency > Reserved concurrency to 0
+            #  but it did not work, the Lambda did not get invoked and no msg sent
+            #  to DLQ.
+            # Docs:
+            #  https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-eventsourcemapping.html
+            #  https://docs.aws.amazon.com/AWSCloudFormation/latest/TemplateReference/aws-properties-lambda-eventsourcemapping-destinationconfig.html
+            onFailure:
+              arn: ${self:custom.awsWatchdogSnsErrorsArn}
+              type: sns
     iam:
       role:
-        statements: []
-          # TODO aws-watchdog
-          #- Effect: Allow
-          #  Action:
-          #    - sns:Publish
-          #  Resource: ${self:custom.serverlessBase.resources.sharedInfra.SnsErrorTopicArn}
+        statements:
+          # Allow publishing SNS messages to aws-watchdog SNS (that sends emails to me).
+          - Effect: Allow
+            Action:
+              - sns:Publish
+            Resource: ${self:custom.awsWatchdogSnsErrorsArn}
+    # DLQ only for ASYNC invocations: set, as DLQ, the SNS topic in aws-watchdog that
+    #  sends emails to me.
+    # Note: Lambda sync/async invocations examples:
+    #  - ASYNC: S3, SNS, SQS, CloudWatch Logs, EventBridge Scheduler, aws cli, etc.
+    #  - SYNC: API Gateway, aws cli, etc.
+    onError: ${self:custom.awsWatchdogSnsErrorsArn}
 
 
 package:
@@ -160,6 +209,9 @@ package:
 custom:
   # Constants.
   source: https://github.com/puntonim/botte-monorepo/blob/main/projects/botte-be/serverless.yml
+  # SNS and SQS DLQs in aws-watchdog (always prefer SNS, when possible).
+  awsWatchdogSqsErrorsArn: arn:aws:sqs:eu-south-1:477353422995:aws-watchdog-errors-prod
+  awsWatchdogSnsErrorsArn: arn:aws:sns:eu-south-1:477353422995:aws-watchdog-errors-prod
 
   # Plugin: serverless-python-requirements.
   pythonRequirements:
@@ -182,11 +234,18 @@ resources:
   Description: Managed by Serverless at ${self:custom.source}
 
   Resources:
+
+    ####################################################################################
+    ##### DynamoDB task Table that triggers the Lambda
+    ####################################################################################
+
     # DynamoDB task Table that triggers Botte Backend.
     # Docs: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-dynamodb-table.html
     DynamodbTaskTable:
       Type: AWS::DynamoDB::Table
       Properties:
+        # IMP: do not rename it as it used in `libs/public-clients/botte-dynamodb-client`.
+        TableName: botte-be-task-${sls:stage}
         AttributeDefinitions:
           - AttributeName: "PK"
             AttributeType: "S"
@@ -202,7 +261,6 @@ resources:
         StreamSpecification:
             StreamViewType: NEW_IMAGE
         TableClass: STANDARD
-        TableName: botte-be-task-${sls:stage}
         TimeToLiveSpecification:
           AttributeName: ExpirationTs
           Enabled: true

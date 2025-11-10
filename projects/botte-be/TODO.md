@@ -21,10 +21,11 @@
 
 - controllare quali Lambdas ancora usano Botte in patatrack-monorepo
   e convertirle introducendo i clients di botte-be
+  (come ho gia fatto in reborn-automator)
 
 - muovere patatrack-monorepo/projects/alarm-be to solcc-monorepo
 - `sls remove` tutto patatrack-monorepo da AWS (dopo aver spostate alarm-be)
   e anche i parametri in Param Store
 - archiviare git repo: patatrack-monorepo
-  NB: non cancellarlo perchè c'è del codice interessante
+  NB: non cancellarlo perchè c'è del codice molto interessante
 

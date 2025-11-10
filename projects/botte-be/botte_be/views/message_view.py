@@ -64,6 +64,8 @@ def lambda_handler(event: dict[str, Any], context: LambdaContext) -> dict:
     # `text` event param.
     text = event.get("text")
     if not text:
+        # This is a Lambda direct invocation interface, but it returns the same response
+        #  as the HTTP interface.
         return aws_lambda_utils.BadRequest400Response(
             "Payload parameter 'text' required"
         ).to_dict()
@@ -76,4 +78,6 @@ def lambda_handler(event: dict[str, Any], context: LambdaContext) -> dict:
     message = bot.send_message(text=text, chat_id=settings.PUNTONIM_CHAT_ID)
     response_body = message.json
 
+    # This is a Lambda direct invocation interface, but it returns the same response
+    #  as the HTTP interface.
     return aws_lambda_utils.Ok200Response(response_body).to_dict()

@@ -8,7 +8,7 @@ class TestE2eLambdaInvokMessage:
 
     def setup_method(self):
         self.data = {
-            "text": "Hello from (botte-monorepo) botte-be e2e tests for Lambda direct invocation message",
+            "text": "Hello from (botte-monorepo) botte-be e2e tests for Lambda direct sync invocation message",
             "sender_app": "E2E_TESTS_IN_BOTTE_BE",  # `sender_app` is optional.
         }
 
@@ -34,6 +34,16 @@ class TestE2eLambdaInvokMessage:
         #     "text": "Hello from (botte-monorepo) Botte BE e2e tests for endpoint message",
         # }
         assert response["text"] == self.data["text"]
+
+    def test_async(self):
+        client = botte_lambda_client.BotteLambdaClient()
+        response, status_code = client.send_message(
+            text=self.data["text"].replace("sync", "async"),
+            sender_app=self.data["sender_app"],
+            do_invoke_sync=False,
+        )
+        assert response is None
+        assert status_code == 202
 
     # There is no way to test the raising of an exception.
     # Maybe I can add an extra param in the payload, read it in the Lambda source code

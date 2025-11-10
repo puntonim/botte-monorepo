@@ -1,3 +1,4 @@
+import aws_parameter_store_client
 import botte_http_client
 import pytest
 
@@ -8,10 +9,17 @@ class TestE2eEndpointMessage:
             "text": "Hello from (botte-monorepo) botte-be e2e tests for endpoint message",
             "sender_app": "E2E_TESTS_IN_BOTTE_BE",  # `sender_app` is optional.
         }
+        self.botte_api_auth_token = (
+            aws_parameter_store_client.AwsParameterStoreClient().get_secret(
+                path="/botte-be/prod/api-authorizer-token", cache_ttl=60 * 5
+            )
+        )
 
     def test_happy_flow(self):
         client = botte_http_client.BotteHttpClient()
-        response = client.send_message(**self.data)
+        response = client.send_message(
+            **self.data, botte_be_api_auth_token=self.botte_api_auth_token
+        )
         # response.data is like:
         # {
         #     "message_id": 34268,
@@ -33,9 +41,9 @@ class TestE2eEndpointMessage:
         assert response.data["text"] == self.data["text"]
 
     def test_no_auth(self):
-        client = botte_http_client.BotteHttpClient(botte_be_api_auth_token="XXX")
+        client = botte_http_client.BotteHttpClient()
         with pytest.raises(botte_http_client.AuthError):
-            client.send_message(**self.data)
+            client.send_message(**self.data, botte_be_api_auth_token="XXX")
 
     # There is no way to test the raising of an exception.
     # Maybe I can add a custom HTTP header, read it in the Lambda source code and
