@@ -20,7 +20,27 @@ This Botte Lambda client is the preferred client to interact with Botte, when th
     this case use [botte-dynamodb-client](../botte-dynamodb-client))
 
 Note: you might need to set the right policy to allow the consumer to invoke Botte 
- Lambdas.
+ Lambdas. Fi. if the consumer is a Lambda, you might need this:
+```yaml
+# serverless.yml
+
+functions:
+  myfunction:
+    ...
+    iam:
+      role:
+        statements:
+          # Permission to invoke Botte Lambda.
+          - Effect: Allow
+            Action:
+              - lambda:InvokeFunction
+            Resource: ${self:custom.botteLambdaArn}
+
+custom:
+  # Constants.
+  botteLambdaArn: arn:aws:lambda:eu-south-1:477353422995:function:botte-be-prod-message
+  ...
+```
 
 See top docstring in [lambda_client.py](botte_lambda_client/lambda_client.py).
 
