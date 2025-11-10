@@ -41,17 +41,11 @@ BOTTE_BE_BASE_URL = "https://0uneqyoes2.execute-api.eu-south-1.amazonaws.com"
 
 
 class BotteHttpClient:
-    def __init__(
-        self,
-        botte_be_api_auth_token: str,
-        base_url: str = BOTTE_BE_BASE_URL,
-    ):
+    def __init__(self, base_url: str = BOTTE_BE_BASE_URL):
         """
         Args:
-            botte_be_api_auth_token (str): HTTP auth token for Botte HTTP interface.
             base_url (str): base url of the Botte Backend Lambda, optional.
         """
-        self.botte_be_api_auth_token = botte_be_api_auth_token
         self.base_url = base_url
 
     def get_health(self):
@@ -92,10 +86,16 @@ class BotteHttpClient:
 
         return SendVersionResponse(response)
 
-    def send_message(self, text: str, sender_app: str = "BOTTE_HTTP_CLIENT"):
+    def send_message(
+        self,
+        text: str,
+        botte_be_api_auth_token: str,
+        sender_app: str = "BOTTE_HTTP_CLIENT",
+    ):
         """
         Args:
             text (str): the text of the message to send.
+            botte_be_api_auth_token (str): HTTP auth token for Botte HTTP interface.
             sender_app (str): just an identifier, default: "BOTTE_HTTP_CLIENT".
 
         Curl example:
@@ -121,7 +121,7 @@ class BotteHttpClient:
             }
         """
         url = f"{self.base_url}/message"
-        headers = {"authorization": self.botte_be_api_auth_token}
+        headers = {"authorization": botte_be_api_auth_token}
         data = dict(
             text=text,
             sender_app=sender_app,  # Optional.

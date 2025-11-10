@@ -9,12 +9,12 @@ from botte_http_client import (
 
 class TestIntrospection:
     def test_health(self):
-        client = BotteHttpClient("XXX")  # Use the right token to record the mock.
+        client = BotteHttpClient()  # Use the right token to record the mock.
         response = client.get_health()
         assert response.data == "2025-10-31T17:13:26.330895+00:00"
 
     def test_version(self):
-        client = BotteHttpClient("XXX")  # Use the right token to record the mock.
+        client = BotteHttpClient()  # Use the right token to record the mock.
         response = client.get_version()
         assert response.data == {
             "appName": "Botte BE",
@@ -35,7 +35,7 @@ class TestIntrospection:
         }
 
     def test_unhealth(self):
-        client = BotteHttpClient("XXX")  # Use the right token to record the mock.
+        client = BotteHttpClient()  # Use the right token to record the mock.
         response = client.get_unhealth()
         assert response.data == {"message": "Internal Server Error"}
 
@@ -45,22 +45,21 @@ class TestSendMessage:
         self.text = "Hello world from botte http client pytests!"
 
     def test_happy_flow(self):
-        client = BotteHttpClient("XXX")  # Use the right token to record the mock.
-        response = client.send_message(self.text)
+        client = BotteHttpClient()
+        # Note: use the right token to record the mock.
+        response = client.send_message(self.text, botte_be_api_auth_token="XXX")
         assert response.data["text"] == self.text
 
     def test_auth_error(self):
-        client = BotteHttpClient("XXX")
+        client = BotteHttpClient()
         with pytest.raises(AuthError):
-            client.send_message(self.text)
+            # Note: use the right token to record the mock.
+            client.send_message(self.text, botte_be_api_auth_token="XXX")
 
     def test_base_url_error(self):
-        # Use the right token to record the mock.
         client = BotteHttpClient(
-            "XXX",
             base_url="https://0uneqyoes2.execute-api.eu-south-1.amazonaws.com/XXX",
         )
         with pytest.raises(Error404):
-            client.send_message(
-                self.text,
-            )
+            # Note: use the right token to record the mock.
+            client.send_message(self.text, botte_be_api_auth_token="XXX")
