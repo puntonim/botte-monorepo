@@ -17,6 +17,9 @@ This Botte HTTP client is the preferred client to interact with Botte, when the
  - has Internet access
  - and is NOT running inside AWS infra or NOT the same AWS account as Botte (otherwise use [botte-lambda-client](../botte-lambda-client))
 
+Note: when the consumer is running in AWS infra (fi. Lambda), the preferred client
+ should be [botte-lambda-client](../botte-lambda-client).
+
 See top docstring in [http_client.py](botte_http_client/http_client.py).
 
 Also, see details of the HTTP interface in [README.md](../../../README.md) in the root dir.

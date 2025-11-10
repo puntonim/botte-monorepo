@@ -1,43 +1,5 @@
 interactions:
 - request:
-    body: '{"Name": "/botte-be/prod/api-authorizer-token", "WithDecryption": true}'
-    headers:
-      Authorization:
-      - '**REDACTED**'
-      Content-Length:
-      - '71'
-      Content-Type:
-      - !!binary |
-        YXBwbGljYXRpb24veC1hbXotanNvbi0xLjE=
-      User-Agent:
-      - !!binary |
-        Qm90bzMvMS40MC42MiBtZC9Cb3RvY29yZSMxLjQwLjYyIHVhLzIuMSBvcy9tYWNvcyMyMi42LjAg
-        bWQvYXJjaCN4ODZfNjQgbGFuZy9weXRob24jMy4xMC4xNiBtZC9weWltcGwjQ1B5dGhvbiBtL24s
-        YixELFogY2ZnL3JldHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuNDAuNjI=
-    method: POST
-    uri: https://ssm.eu-south-1.amazonaws.com/
-  response:
-    body:
-      string: '{"Parameter": {"ARN": "arn:aws:ssm:eu-south-1:477353422995:parameter/botte-be/prod/api-authorizer-token",
-        "DataType": "text", "LastModifiedDate": 1761419231.611, "Name": "/botte-be/prod/api-authorizer-token",
-        "Type": "SecureString", "Value": "t**REDACTED**", "Version": 1}}'
-    headers:
-      Connection:
-      - keep-alive
-      Content-Length:
-      - '259'
-      Content-Type:
-      - application/x-amz-json-1.1
-      Date:
-      - Thu, 30 Oct 2025 18:00:59 GMT
-      Server:
-      - Server
-      x-amzn-RequestId:
-      - 57a3ce62-d4fa-49bc-85f4-11e541fd73a0
-    status:
-      code: 200
-      message: OK
-- request:
     body: '{"text": "Hello world from botte http client pytests!", "sender_app": "BOTTE_HTTP_CLIENT"}'
     headers:
       Accept:

@@ -1,23 +1,20 @@
-from unittest import mock
-
 import pytest
 
 from botte_http_client import (
     AuthError,
     BotteHttpClient,
     Error404,
-    ParamNotFoundInAwsParamStore,
 )
 
 
 class TestIntrospection:
     def test_health(self):
-        client = BotteHttpClient()
+        client = BotteHttpClient("XXX")  # Use the right token to record the mock.
         response = client.get_health()
         assert response.data == "2025-10-31T17:13:26.330895+00:00"
 
     def test_version(self):
-        client = BotteHttpClient()
+        client = BotteHttpClient("XXX")  # Use the right token to record the mock.
         response = client.get_version()
         assert response.data == {
             "appName": "Botte BE",
@@ -38,7 +35,7 @@ class TestIntrospection:
         }
 
     def test_unhealth(self):
-        client = BotteHttpClient()
+        client = BotteHttpClient("XXX")  # Use the right token to record the mock.
         response = client.get_unhealth()
         assert response.data == {"message": "Internal Server Error"}
 
@@ -48,28 +45,22 @@ class TestSendMessage:
         self.text = "Hello world from botte http client pytests!"
 
     def test_happy_flow(self):
-        client = BotteHttpClient()
+        client = BotteHttpClient("XXX")  # Use the right token to record the mock.
         response = client.send_message(self.text)
         assert response.data["text"] == self.text
 
     def test_auth_error(self):
-        client = BotteHttpClient(botte_be_api_auth_token="XXX")
+        client = BotteHttpClient("XXX")
         with pytest.raises(AuthError):
             client.send_message(self.text)
 
     def test_base_url_error(self):
-        client = BotteHttpClient()
+        # Use the right token to record the mock.
+        client = BotteHttpClient(
+            "XXX",
+            base_url="https://5t325uqwq7.execute-api.eu-south-1.amazonaws.com/XXX",
+        )
         with pytest.raises(Error404):
             client.send_message(
                 self.text,
-                base_url="https://5t325uqwq7.execute-api.eu-south-1.amazonaws.com/XXX",
             )
-
-    def test_param_api_auth_token_not_found_in_param_store(self):
-        with mock.patch(
-            "botte_http_client.http_client.BOTTE_BE_API_AUTHORIZER_TOKEN_PATH_IN_PARAM_STORE",
-            "/XXX",
-        ):
-            client = BotteHttpClient()
-            with pytest.raises(ParamNotFoundInAwsParamStore):
-                client.send_message(self.text)

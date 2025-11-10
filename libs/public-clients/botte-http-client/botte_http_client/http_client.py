@@ -5,7 +5,10 @@
 This Botte HTTP client is the preferred client to interact with Botte, when the
  consumer:
  - has Internet access
- - and is NOT running inside AWS infra or NOT the same AWS account as Botte (otherwise prefer `botte-lambda-client`
+ - and is NOT running inside AWS infra or NOT the same AWS account as Botte (otherwise prefer `botte-lambda-client`)
+
+Note: when the consumer is running in AWS infra (fi. Lambda), the preferred client
+ should be [botte-lambda-client](../botte-lambda-client).
 
 ```py
 import botte_http_client
@@ -19,7 +22,6 @@ assert response.data["text"] == "Hello world!"
 from functools import cached_property
 from typing import Any
 
-import aws_parameter_store_client
 import requests
 
 __all__ = [
@@ -32,22 +34,28 @@ __all__ = [
     "AuthError",
     "Error404",
     "NotError500",
-    "ParamNotFoundInAwsParamStore",
 ]
 
 # Note: these might change in case of Botte Backend destroy and re-deploy.
 BOTTE_BE_BASE_URL = "https://5t325uqwq7.execute-api.eu-south-1.amazonaws.com"
-BOTTE_BE_API_AUTHORIZER_TOKEN_PATH_IN_PARAM_STORE = (
-    "/botte-be/prod/api-authorizer-token"
-)
 
 
 class BotteHttpClient:
-    def __init__(self, botte_be_api_auth_token: str | None = None):
-        self.__botte_be_api_auth_token = botte_be_api_auth_token
+    def __init__(
+        self,
+        botte_be_api_auth_token: str,
+        base_url: str = BOTTE_BE_BASE_URL,
+    ):
+        """
+        Args:
+            botte_be_api_auth_token (str): HTTP auth token for Botte HTTP interface.
+            base_url (str): base url of the Botte Backend Lambda, optional.
+        """
+        self.botte_be_api_auth_token = botte_be_api_auth_token
+        self.base_url = base_url
 
-    def get_health(self, base_url: str = BOTTE_BE_BASE_URL):
-        url = f"{base_url}/health"
+    def get_health(self):
+        url = f"{self.base_url}/health"
         response = requests.get(url)
 
         try:
@@ -59,8 +67,8 @@ class BotteHttpClient:
 
         return SendHealthResponse(response)
 
-    def get_unhealth(self, base_url: str = BOTTE_BE_BASE_URL):
-        url = f"{base_url}/unhealth"
+    def get_unhealth(self):
+        url = f"{self.base_url}/unhealth"
         response = requests.get(url)
 
         try:
@@ -71,8 +79,8 @@ class BotteHttpClient:
 
         return SendUnhealthResponse(response)
 
-    def get_version(self, base_url: str = BOTTE_BE_BASE_URL):
-        url = f"{base_url}/version"
+    def get_version(self):
+        url = f"{self.base_url}/version"
         response = requests.get(url)
 
         try:
@@ -84,16 +92,10 @@ class BotteHttpClient:
 
         return SendVersionResponse(response)
 
-    def send_message(
-        self,
-        text: str,
-        base_url: str = BOTTE_BE_BASE_URL,
-        sender_app: str = "BOTTE_HTTP_CLIENT",
-    ):
+    def send_message(self, text: str, sender_app: str = "BOTTE_HTTP_CLIENT"):
         """
         Args:
             text (str): the text of the message to send.
-            base_url (str): base url of the Botte Backend Lambda, optional.
             sender_app (str): just an identifier, default: "BOTTE_HTTP_CLIENT".
 
         Curl example:
@@ -118,8 +120,8 @@ class BotteHttpClient:
               "text": "Hello World"
             }
         """
-        url = f"{base_url}/message"
-        headers = {"authorization": self._botte_be_api_auth_token}
+        url = f"{self.base_url}/message"
+        headers = {"authorization": self.botte_be_api_auth_token}
         data = dict(
             text=text,
             sender_app=sender_app,  # Optional.
@@ -137,22 +139,25 @@ class BotteHttpClient:
 
         return SendMessageResponse(response)
 
-    @property
-    def _botte_be_api_auth_token(self):
-        if not self.__botte_be_api_auth_token:
-            client = aws_parameter_store_client.AwsParameterStoreClient()
-            try:
-                value = client.get_secret(
-                    path=BOTTE_BE_API_AUTHORIZER_TOKEN_PATH_IN_PARAM_STORE,
-                    cache_ttl=60 * 5,
-                )
-            except aws_parameter_store_client.ParameterNotFound as exc:
-                raise ParamNotFoundInAwsParamStore(
-                    path=BOTTE_BE_API_AUTHORIZER_TOKEN_PATH_IN_PARAM_STORE
-                ) from exc
-            self.__botte_be_api_auth_token = value
-
-        return self.__botte_be_api_auth_token
+    # Note: I commented out this code, because if the consumer has access to
+    #  Param Store, then it means that has access to AWS infra, so it should
+    #  use Botte Lambda Client instead.
+    # @property
+    # def _botte_be_api_auth_token(self):
+    #     if not self.__botte_be_api_auth_token:
+    #         client = aws_parameter_store_client.AwsParameterStoreClient()
+    #         try:
+    #             value = client.get_secret(
+    #                 path="/botte-be/prod/api-authorizer-token",
+    #                 cache_ttl=60 * 5,
+    #             )
+    #         except aws_parameter_store_client.ParameterNotFound as exc:
+    #             raise ParamNotFoundInAwsParamStore(
+    #                 path="/botte-be/prod/api-authorizer-token"
+    #             ) from exc
+    #         self.__botte_be_api_auth_token = value
+    #
+    #     return self.__botte_be_api_auth_token
 
 
 class BaseJsonResponse:
@@ -229,9 +234,3 @@ class NotError500(BaseBotteHttpClientException):
         super().__init__(
             f"We were expecting a 500 error, instead we got: {status_code}"
         )
-
-
-class ParamNotFoundInAwsParamStore(BaseBotteHttpClientException):
-    def __init__(self, path: str):
-        self.path = path
-        super().__init__(f"Param not found in param store: {path}")

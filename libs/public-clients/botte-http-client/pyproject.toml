@@ -10,7 +10,6 @@ version = "1.0.0"
 requires-python = ">=3.10"
 dependencies = [
     "requests (>=2.32.5,<3.0.0)",
-    "aws-parameter-store-client @ git+https://github.com/puntonim/clients-monorepo#subdirectory=aws-parameter-store-client"
 ]
 
 [build-system]
