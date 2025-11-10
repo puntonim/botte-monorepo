@@ -17,7 +17,7 @@ interactions:
       User-Agent:
       - python-requests/2.32.5
     method: POST
-    uri: https://5t325uqwq7.execute-api.eu-south-1.amazonaws.com/XXX/message
+    uri: https://0uneqyoes2.execute-api.eu-south-1.amazonaws.com/XXX/message
   response:
     body:
       string: '{"message": "Not Found"}'

@@ -58,7 +58,7 @@ class TestSendMessage:
         # Use the right token to record the mock.
         client = BotteHttpClient(
             "XXX",
-            base_url="https://5t325uqwq7.execute-api.eu-south-1.amazonaws.com/XXX",
+            base_url="https://0uneqyoes2.execute-api.eu-south-1.amazonaws.com/XXX",
         )
         with pytest.raises(Error404):
             client.send_message(

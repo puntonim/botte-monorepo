@@ -37,7 +37,7 @@ __all__ = [
 ]
 
 # Note: these might change in case of Botte Backend destroy and re-deploy.
-BOTTE_BE_BASE_URL = "https://5t325uqwq7.execute-api.eu-south-1.amazonaws.com"
+BOTTE_BE_BASE_URL = "https://0uneqyoes2.execute-api.eu-south-1.amazonaws.com"
 
 
 class BotteHttpClient:
