@@ -36,12 +36,13 @@ custom:
 import botte_lambda_client
 
 client = botte_lambda_client.BotteLambdaClient()
-response, status_code = client.send_message("Hello world", sender_app="BOTTE_LAMBDA_CLIENT")
+response, status_code = client.send_message("Hello world", sender_app="BOTTE_LAMBDA_CLIENT", do_invoke_sync=True)
 assert response["text"] == "Hello world"
 assert status_code == 200
 ```
 """
 
+import contextlib
 import json
 
 import aws_lambda_client
@@ -59,17 +60,27 @@ LAMBDA_NAME = "477353422995:function:botte-be-prod-message"
 
 
 class BotteLambdaClient:
-    def send_message(self, text: str, sender_app: str = "BOTTE_LAMBDA_CLIENT"):
+    def send_message(
+        self,
+        text: str,
+        sender_app: str = "BOTTE_LAMBDA_CLIENT",
+        do_invoke_sync: bool = True,
+    ):
         """
         Args:
             text (str): the text of the message to send.
             sender_app (str): just an identifier, default: "BOTTE_LAMBDA_CLIENT".
+            do_invoke_sync: False to invoke the Lambda asynchronously.
         """
 
         client = aws_lambda_client.AwsLambdaClient()
         payload = {"text": text, "sender_app": sender_app}
         try:
-            response = client.invoke(LAMBDA_NAME, payload=payload)
+            response = client.invoke(
+                LAMBDA_NAME,
+                payload=payload,
+                do_invoke_sync=do_invoke_sync,
+            )
         except aws_lambda_client.LambdaNotFound as exc:
             raise BotteLambdaNotFound(LAMBDA_NAME) from exc
 
@@ -79,12 +90,17 @@ class BotteLambdaClient:
         payload = response.get("Payload")
         payload = payload.read()
         payload = payload.decode()
-        payload = json.loads(payload)
-        if "statusCode" in payload:
-            status_code = payload.get("statusCode")
-        body = payload.get("body")
-        body = json.loads(body)
+        # body is none for async invocations.
+        body = None
+        if payload:
+            payload = json.loads(payload)
+            if "statusCode" in payload:
+                status_code = payload.get("statusCode")
+            body = payload.get("body")
+            with contextlib.suppress(Exception):
+                body = json.loads(body)
 
+        # body is none for async invocations.
         return body, status_code
 
 

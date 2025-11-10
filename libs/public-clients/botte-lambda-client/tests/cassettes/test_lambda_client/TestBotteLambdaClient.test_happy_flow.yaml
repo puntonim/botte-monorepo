@@ -1,43 +1,46 @@
 interactions:
 - request:
-    body: '{"text": "Hello world from botte lambda client pytests!", "sender_app":
-      "BOTTE_LAMBDA_CLIENT"}'
+    body: '{"text": "Hello world from (botte-monorepo) botte-lambda-client sync pytests!",
+      "sender_app": "BOTTE_LAMBDA_CLIENT"}'
     headers:
       Authorization:
       - '**REDACTED**'
       Content-Length:
-      - '94'
+      - '116'
       User-Agent:
       - !!binary |
-        Qm90bzMvMS40MC42MyBtZC9Cb3RvY29yZSMxLjQwLjYzIHVhLzIuMSBvcy9tYWNvcyMyMi42LjAg
-        bWQvYXJjaCN4ODZfNjQgbGFuZy9weXRob24jMy4xMC4xNiBtZC9weWltcGwjQ1B5dGhvbiBtL1os
-        RCxiLG4gY2ZnL3JldHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuNDAuNjM=
+        Qm90bzMvMS40MC42OSBtZC9Cb3RvY29yZSMxLjQwLjY5IHVhLzIuMSBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCN4ODZfNjQgbGFuZy9weXRob24jMy4xMC4xNiBtZC9weWltcGwjQ1B5dGhvbiBtL0Qs
+        YixaLG4gY2ZnL3JldHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuNDAuNjk=
+      X-Amz-Invocation-Type:
+      - !!binary |
+        UmVxdWVzdFJlc3BvbnNl
     method: POST
     uri: https://lambda.eu-south-1.amazonaws.com/2015-03-31/functions/477353422995%3Afunction%3Abotte-be-prod-message/invocations
   response:
     body:
       string: '{"statusCode": 200, "Content-Type": "application/json", "body": "{\"message_id\":
-        34266, \"from\": {\"id\": 6570886232, \"is_bot\": true, \"first_name\": \"Botte
+        34308, \"from\": {\"id\": 6570886232, \"is_bot\": true, \"first_name\": \"Botte
         BOT\", \"username\": \"realbottebot\"}, \"chat\": {\"id\": 2137200685, \"first_name\":
-        \"Paolo\", \"username\": \"puntonim\", \"type\": \"private\"}, \"date\": 1761927409,
-        \"text\": \"Hello world from botte lambda client pytests!\"}"}'
+        \"Paolo\", \"username\": \"puntonim\", \"type\": \"private\"}, \"date\": 1762783064,
+        \"text\": \"Hello world from (botte-monorepo) botte-lambda-client sync pytests!\"}"}'
     headers:
       Connection:
       - keep-alive
       Content-Length:
-      - '396'
+      - '418'
       Content-Type:
       - application/json
       Date:
-      - Fri, 31 Oct 2025 16:16:49 GMT
+      - Mon, 10 Nov 2025 13:57:44 GMT
       X-Amz-Executed-Version:
       - $LATEST
       X-Amzn-Trace-Id:
-      - Root=1-6904e0ec-7fcbd3c23eec25ae7ac5ac3a;Parent=51d4e0936d1399af;Sampled=0;Lineage=1:25958c89:0
+      - Root=1-6911ef58-12b70b9d00e31fa239eeb7d6;Parent=4853b7d22c19352d;Sampled=0;Lineage=1:25958c89:0
       x-amzn-Remapped-Content-Length:
       - '0'
       x-amzn-RequestId:
-      - 3c11dd7b-d7e6-45c2-a18c-fd5862240eae
+      - 89ad2f25-2baf-4a98-b25d-2e2929bc6ca9
     status:
       code: 200
       message: OK

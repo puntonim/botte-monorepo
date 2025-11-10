@@ -34,7 +34,7 @@ json-utils = {git = "https://github.com/puntonim/utils-monorepo", subdirectory =
 type = "git"
 url = "https://github.com/puntonim/clients-monorepo"
 reference = "HEAD"
-resolved_reference = "92bccee69350afdb87cf09c2dcaff0ce5dd3cff3"
+resolved_reference = "1a5108662b9ce92bceed1c64d42bad5f1776658d"
 subdirectory = "aws-lambda-client"
 
 [[package]]

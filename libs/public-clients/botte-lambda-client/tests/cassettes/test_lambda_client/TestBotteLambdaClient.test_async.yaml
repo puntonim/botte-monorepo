@@ -1,0 +1,39 @@
+interactions:
+- request:
+    body: '{"text": "Hello world from (botte-monorepo) botte-lambda-client async pytests!",
+      "sender_app": "BOTTE_LAMBDA_CLIENT"}'
+    headers:
+      Authorization:
+      - '**REDACTED**'
+      Content-Length:
+      - '117'
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS40MC42OSBtZC9Cb3RvY29yZSMxLjQwLjY5IHVhLzIuMSBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCN4ODZfNjQgbGFuZy9weXRob24jMy4xMC4xNiBtZC9weWltcGwjQ1B5dGhvbiBtL0Qs
+        WixiLG4gY2ZnL3JldHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuNDAuNjk=
+      X-Amz-Invocation-Type:
+      - !!binary |
+        RXZlbnQ=
+    method: POST
+    uri: https://lambda.eu-south-1.amazonaws.com/2015-03-31/functions/477353422995%3Afunction%3Abotte-be-prod-message/invocations
+  response:
+    body:
+      string: ''
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      Date:
+      - Mon, 10 Nov 2025 14:00:02 GMT
+      X-Amzn-Trace-Id:
+      - root=1-6911efe2-3c3544b108e4e1f474dafb2b;parent=35f4fe2233e0779e;sampled=0
+      x-amzn-Remapped-Content-Length:
+      - '0'
+      x-amzn-RequestId:
+      - ffeb4704-0634-4851-85a4-be5db7407980
+    status:
+      code: 202
+      message: Accepted
+version: 1
