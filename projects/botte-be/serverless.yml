@@ -157,8 +157,12 @@ functions:
                   TaskId:
                     S: [BOTTE_MESSAGE]
           startingPosition: LATEST
-          batchSize: 100 # Max batch size.
-          batchWindow: 3 # Seconds to wait (while collecting the batch) before invoking Lambda.
+          # `batchSize` is the max num DynamoDB records (= tasks) to include in a batch
+          #  sent to the Lambda. So, given the Lambda `timeout: 28` sec, then the Lambda
+          #  must be able to send this (`batchSize`) number of messages via Telegram
+          #  within that timeout, or it will be killed.
+          batchSize: 3 # Max batch size.
+          batchWindow: 5 # Seconds to wait (while collecting DynamoDB records and grouping them in a batch) before invoking Lambda.
           maximumRetryAttempts: 0
           parallelizationFactor: 10 # Max 10 concurrent Lambdas per shard (10 is the max).
           enabled: true
