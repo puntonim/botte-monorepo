@@ -693,7 +693,7 @@ develop = false
 type = "git"
 url = "https://github.com/puntonim/utils-monorepo"
 reference = "HEAD"
-resolved_reference = "c89d7f922740b789f1ac9d735d69f39b93381af7"
+resolved_reference = "5057ba0855efad177328db15f031afcb5239f278"
 subdirectory = "datetime-utils"
 
 [[package]]
@@ -2344,7 +2344,7 @@ version = "1.0.0"
 description = "Utils Monorepo: Settings Utils"
 optional = false
 python-versions = ">=3.10"
-groups = ["main", "test"]
+groups = ["main"]
 files = []
 develop = false
 

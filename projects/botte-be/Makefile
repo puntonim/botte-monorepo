@@ -1,4 +1,4 @@
-PYTHON_VERSION:="3.13.7"
+PYTHON_VERSION:="3.13"
 
 .PHONY: default
 default: test ;

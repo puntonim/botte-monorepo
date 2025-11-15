@@ -40,6 +40,8 @@ def _log_init():
     #  `log-utils` or a module in this repo.
     #  To resolve, just move that import statement after the invocation of this fn.
     powertools_logger.configure_default(
+        #  Mind that "service" (and not "app") is the exact term used by
+        #   aws_lambda_powertools.Logger.
         service_name=settings.APP_NAME,
         service_version=__version__,
         is_verbose=False,

@@ -15,6 +15,7 @@ Note: one of my patterns is to have Lambdas that connect to a SQLite database st
  these 2 services) via a VPC Gateway Endpoint for free. So in the end: a Lambda in
  a VPC can connect to Botte DynamoDB interface by using a free VPC Gateway Endpoint
  and this Botte DynamoDB client.
+ See contabel project in patatrack-monorepo for the VPC setup.
 
 ```py
 import botte_dynamodb_client

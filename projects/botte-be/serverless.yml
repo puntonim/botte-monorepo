@@ -143,8 +143,9 @@ functions:
     timeout: 28
     maximumRetryAttempts: 0
     events:
-      # This stream is an AWS::Lambda::EventSourceMapping.
-      # Docs: https://docs.aws.amazon.com/AWSCloudFormation/latest/TemplateReference/aws-resource-lambda-eventsourcemapping.html
+      # Docs:
+      #  - https://docs.aws.amazon.com/lambda/latest/dg/with-ddb.html
+      #  - https://docs.aws.amazon.com/AWSCloudFormation/latest/TemplateReference/aws-resource-lambda-eventsourcemapping.html
       - stream:
           type: dynamodb
           arn: !GetAtt DynamodbTaskTable.StreamArn # Created down here in `resources`.
@@ -172,9 +173,7 @@ functions:
             #  AWS web console: Configuration > Concurrency > Reserved concurrency to 0
             #  but it did not work, the Lambda did not get invoked and no msg sent
             #  to DLQ.
-            # Docs:
-            #  https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-eventsourcemapping.html
-            #  https://docs.aws.amazon.com/AWSCloudFormation/latest/TemplateReference/aws-properties-lambda-eventsourcemapping-destinationconfig.html
+            # Docs: https://docs.aws.amazon.com/AWSCloudFormation/latest/TemplateReference/aws-properties-lambda-eventsourcemapping-destinationconfig.html
             onFailure:
               arn: ${self:custom.awsWatchdogSnsErrorsArn}
               type: sns
