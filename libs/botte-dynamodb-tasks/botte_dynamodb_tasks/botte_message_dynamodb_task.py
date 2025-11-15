@@ -2,13 +2,18 @@
 ** BOTTE DYNAMODB TASKS **
 ==========================
 
-Used by [botte-dynamodb-client](../public-clients/botte-dynamodb-client), with [aws-dynamodb-client](https://github.com/puntonim/clients-monorepo/tree/main/aws-dynamodb-client),
- to interact with Botte via its DynamoDB interface.
+Used by [botte-dynamodb-client](../public-clients/botte-dynamodb-client),
+ with [aws-dynamodb-client](https://github.com/puntonim/clients-monorepo/tree/main/aws-dynamodb-client),
+ to interact with Botte in order to send Telegram text messages, via its
+ DynamoDB interface.
 
 Botte has a DynamoDb interface meant to be used by consumers that:
  - are running in AWS infra, in the same AWS account as Botte (otherwise they would use [botte-http-client](../botte-http-client))
  - but cannot invoke Botte Lambdas directly, fi. they are in a VPC with no connection to
     other AWS services nor Internet access (otherwise they would use [botte-lambda-client](../botte-lambda-client))
+
+Multiple Telegram messages will be sent by many Lambdas concurrently, unless the
+ `do_process_task_fifo` (and optionally `fifo_group_id`) arg is given.
 
 Note: one of my patterns is to have Lambdas that connect to a SQLite database stored
  on EFS. EFS requires a VPC, and the Lambda to be in the same VPC. But, for VPCs,
@@ -42,7 +47,7 @@ task = botte_dynamodb_tasks.BotteMessageDynamodbTask(
     expiration_ts=expiration_ts,
 )
 assert task.to_dict() == {
-    "PK": botte_dynamodb_tasks.BOTTE_MESSAGE_TASK_ID,
+    "PK": botte_dynamodb_tasks.BOTTE_MESSAGE_TASK_ID + f"#{ksuid}",
     "SK": str(ksuid),
     "TaskId": botte_dynamodb_tasks.BOTTE_MESSAGE_TASK_ID,
     "SenderApp": sender_app,
@@ -53,7 +58,7 @@ assert task.to_dict() == {
 }
 assert task.to_json() == json.dumps(
     {
-        "PK": botte_dynamodb_tasks.BOTTE_MESSAGE_TASK_ID,
+        "PK": botte_dynamodb_tasks.BOTTE_MESSAGE_TASK_ID + f"#{ksuid}",
         "SK": str(ksuid),
         "TaskId": botte_dynamodb_tasks.BOTTE_MESSAGE_TASK_ID,
         "SenderApp": sender_app,
@@ -91,13 +96,40 @@ class BotteMessageDynamodbTask:
         self,
         text: str,
         sender_app: str,
+        do_process_task_fifo: bool = False,
+        fifo_group_id: str | None = None,
         # Eg. str(KsuidMs()) -> '2XfZrNMydhTvwyWlHdzJPdz3wuA'.
         #  And: KsuidMs.from_base62('2XfZrNMydhTvwyWlHdzJPdz3wuA').
         ksuid: KsuidMs | None = None,
         expiration_ts: int | None = None,
     ):
+        """
+        A task enqueued to the DynamoDB task queue used by Botte to send text messages
+         via Telegram to me.
+        The task is actually a DynamoDB record to be INSERTed.
+
+        Args:
+            text: the text of the Telegram message; it is included in the task payload.
+            sender_app: identifier of the sender app.
+            do_process_task_fifo: True to have Botte Lambda process this task
+             sequentially in FIFO order, together with all other tasks with
+             do_process_task_fifo=True and the same fifo_group_id.
+             False to maximize concurrency, so many Lambdas will process all tasks with
+             do_process_task_fifo=False concurrently.
+            fifo_group_id: only useful in a very rare use case: when you have 2+ groups
+             of tasks that need to be processed by Lambda sequentially. You will have
+             2+ concurrent Lambdas that process tasks with the same fifo_group_id
+             sequentially. So it's concurrency between groups, but sequentially for
+             tasks of the same group.
+            ksuid: eg. str(KsuidMs()) -> '2XfZrNMydhTvwyWlHdzJPdz3wuA'; only useful in
+             tests.
+            expiration_ts: if you really want to customize the expiration; only useful
+             in tests.
+        """
         self.text = text
         self.sender_app = sender_app
+        self.do_process_task_fifo = do_process_task_fifo
+        self.fifo_group_id = fifo_group_id
         if not ksuid:
             # Unique ID (like UUID), but with a timestamp info in it, and
             #  alphabetically sortable by timestamp.
@@ -121,7 +153,7 @@ class BotteMessageDynamodbTask:
          converted to this JSON:
             {
                 "PK": {
-                    "S": "BOTTE_MESSAGE"
+                    "S": "BOTTE_MESSAGE:34sVCw69dftbK1MSWtRkv6T8vGp"
                 },
                 "SK": {
                     "S": "34sVCw69dftbK1MSWtRkv6T8vGp"
@@ -145,8 +177,10 @@ class BotteMessageDynamodbTask:
             }
         """
         data = {
-            "PK": BOTTE_MESSAGE_TASK_ID,
-            "SK": None,  # Used for sorting and de-duplicating.
+            # Partition key.
+            "PK": BOTTE_MESSAGE_TASK_ID,  # + something, done later one.
+            # Sort key, used for sorting alphabetically and de-duplicating.
+            "SK": None,  # str(self.ksuid), assigned later on.
             "TaskId": BOTTE_MESSAGE_TASK_ID,
             "SenderApp": self.sender_app,
             "Payload": {
@@ -167,6 +201,23 @@ class BotteMessageDynamodbTask:
         if not isinstance(self.ksuid, KsuidMs):
             raise exceptions.ValidationError(f"ksuid must be KsuidMs: {self.ksuid}")
         data["SK"] = str(self.ksuid)
+
+        # Create suffix for the PK (partition key).
+        # IMP: this DynamoDB record will trigger Botte Lambda (via DynamoDB Stream).
+        #  Lambda can process only records with different PK (partition key)
+        #  concurrently. While records with the same PK will be processed sequentially,
+        #  with the order determined by SK (sort key, alphabetically).
+        # So, first, make the suffix unique (using ksuid).
+        suffix = f"#{self.ksuid}"
+        # Second, if the consumer wants this task to be processed sequentially (FIFO)
+        #  then remove the suffix, so this task will have the common PK.
+        if self.do_process_task_fifo:
+            suffix = ""
+            # Third, if the consumer wants only the tasks in a group to be processed
+            #  sequentially (FIFO) then the suffix should be fifo_group_id.
+            if self.fifo_group_id:
+                suffix = f"#{self.fifo_group_id}"
+        data["PK"] += suffix
 
         try:
             datetime_utils.timestamp_to_utc_datetime(self.expiration_ts)
@@ -197,7 +248,7 @@ class BotteMessageDynamodbTask:
                         "S": "34t1cou0pVRlvW8OECP0J1Q4nJC"
                     },
                     "PK": {
-                        "S": "BOTTE_MESSAGE"
+                        "S": "BOTTE_MESSAGE:34t1cou0pVRlvW8OECP0J1Q4nJC"
                     }
                 },
                 "NewImage": {
@@ -221,7 +272,7 @@ class BotteMessageDynamodbTask:
                         }
                     },
                     "PK": {
-                        "S": "BOTTE_MESSAGE"
+                        "S": "BOTTE_MESSAGE:34t1cou0pVRlvW8OECP0J1Q4nJC"
                     }
                 },
                 "SequenceNumber": "4444500001357803510521810",
@@ -252,7 +303,10 @@ class BotteMessageDynamodbTask:
         expiration_ts = _deserialize(new_image.get("ExpirationTs"))
 
         # Validation.
-        if pk != BOTTE_MESSAGE_TASK_ID:
+        if not pk:
+            raise exceptions.ValidationError(f"Invalid PK: {pk}")
+        hash_pos = pk.find("#") if pk.find("#") > -1 else len(pk)
+        if pk[:hash_pos] != BOTTE_MESSAGE_TASK_ID:
             raise exceptions.ValidationError(f"Invalid PK: {pk}")
 
         try:

@@ -11,10 +11,11 @@ from botte_be.views.dynamodb_message_view import lambda_handler
 
 class TestDynamodbMessageView:
     def setup_method(self):
+        ksuid = KsuidMs()
         self.context = LambdaContextFactory().make()
         self.new_image = {
-            "PK": {"S": botte_dynamodb_tasks.BOTTE_MESSAGE_TASK_ID},
-            "SK": {"S": str(KsuidMs())},
+            "PK": {"S": botte_dynamodb_tasks.BOTTE_MESSAGE_TASK_ID + f"#{ksuid}"},
+            "SK": {"S": str(ksuid)},
             "TaskId": {"S": botte_dynamodb_tasks.BOTTE_MESSAGE_TASK_ID},
             "SenderApp": {"S": "BOTTE_BE_PYTEST"},
             "Payload": {
@@ -28,6 +29,27 @@ class TestDynamodbMessageView:
         }
 
     def test_happy_flow(self):
+        lambda_handler(
+            DynamodbEventToLambdaFactory.make_for_insert(new_image=self.new_image),
+            self.context,
+        )
+
+    def test_fifo(self):
+        """
+        The goal is to test a message sent with the FIFO order option.
+        """
+        self.new_image["PK"] = {"S": botte_dynamodb_tasks.BOTTE_MESSAGE_TASK_ID}
+        lambda_handler(
+            DynamodbEventToLambdaFactory.make_for_insert(new_image=self.new_image),
+            self.context,
+        )
+
+    def test_fifo_group_id(self):
+        """
+        The goal is to test a message sent with the FIFO order option and the FIFO
+         group id = "G1".
+        """
+        self.new_image["PK"] = {"S": botte_dynamodb_tasks.BOTTE_MESSAGE_TASK_ID + "#G1"}
         lambda_handler(
             DynamodbEventToLambdaFactory.make_for_insert(new_image=self.new_image),
             self.context,

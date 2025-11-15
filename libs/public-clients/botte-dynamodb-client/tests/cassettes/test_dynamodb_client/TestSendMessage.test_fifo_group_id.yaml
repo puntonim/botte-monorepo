@@ -1,0 +1,322 @@
+interactions:
+- request:
+    body: '{"TableName": "botte-be-task-prod"}'
+    headers:
+      Authorization:
+      - '**REDACTED**'
+      Content-Length:
+      - '35'
+      Content-Type:
+      - !!binary |
+        YXBwbGljYXRpb24veC1hbXotanNvbi0xLjA=
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS40MC43NCBtZC9Cb3RvY29yZSMxLjQwLjc0IHVhLzIuMSBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCN4ODZfNjQgbGFuZy9weXRob24jMy4xMC4xNiBtZC9weWltcGwjQ1B5dGhvbiBtL1os
+        bixiLEQsUCBjZmcvcmV0cnktbW9kZSNsZWdhY3kgQm90b2NvcmUvMS40MC43NCBSZXNvdXJjZQ==
+    method: POST
+    uri: https://dynamodb.eu-south-1.amazonaws.com/
+  response:
+    body:
+      string: '{"Table":{"AttributeDefinitions":[{"AttributeName":"PK","AttributeType":"S"},{"AttributeName":"SK","AttributeType":"S"}],"BillingModeSummary":{"BillingMode":"PAY_PER_REQUEST","LastUpdateToPayPerRequestDateTime":1.762787594722E9},"CreationDateTime":1.762787594722E9,"DeletionProtectionEnabled":false,"ItemCount":0,"KeySchema":[{"AttributeName":"PK","KeyType":"HASH"},{"AttributeName":"SK","KeyType":"RANGE"}],"LatestStreamArn":"arn:aws:dynamodb:eu-south-1:477353422995:table/botte-be-task-prod/stream/2025-11-10T15:13:14.722","LatestStreamLabel":"2025-11-10T15:13:14.722","ProvisionedThroughput":{"NumberOfDecreasesToday":0,"ReadCapacityUnits":0,"WriteCapacityUnits":0},"StreamSpecification":{"StreamEnabled":true,"StreamViewType":"NEW_IMAGE"},"TableArn":"arn:aws:dynamodb:eu-south-1:477353422995:table/botte-be-task-prod","TableClassSummary":{"TableClass":"STANDARD"},"TableId":"53d35ddb-212a-4d15-8378-0af92e93dda7","TableName":"botte-be-task-prod","TableSizeBytes":0,"TableStatus":"ACTIVE","TableThroughputModeSummary":{"LastUpdateToPayPerRequestDateTime":1.762787594722E9,"TableThroughputMode":"PAY_PER_REQUEST"},"WarmThroughput":{"ReadUnitsPerSecond":12000,"Status":"ACTIVE","WriteUnitsPerSecond":4000}}}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '1208'
+      Content-Type:
+      - application/x-amz-json-1.0
+      Date:
+      - Sat, 15 Nov 2025 19:57:50 GMT
+      Server:
+      - Server
+      x-amz-crc32:
+      - '3278714032'
+      x-amzn-RequestId:
+      - 73V83TDQ2RPHJ1RFT27DGAH0F7VV4KQNSO5AEMVJF66Q9ASUAAJG
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"TableName": "botte-be-task-prod", "Item": {"PK": {"S": "BOTTE_MESSAGE#G1"},
+      "SK": {"S": "35WpRT8oH6w0TuXrSRtQ1b6EMHt"}, "TaskId": {"S": "BOTTE_MESSAGE"},
+      "SenderApp": {"S": "BOTTE_DYNAMODB_CLIENT_PYTESTS"}, "Payload": {"M": {"text":
+      {"S": "Hello world from (botte-monorepo) botte dynamodb client pytests! 1"}}},
+      "ExpirationTs": {"N": "1920997986"}}, "ConditionExpression": "attribute_not_exists(PK)"}'
+    headers:
+      Authorization:
+      - '**REDACTED**'
+      Content-Length:
+      - '402'
+      Content-Type:
+      - !!binary |
+        YXBwbGljYXRpb24veC1hbXotanNvbi0xLjA=
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS40MC43NCBtZC9Cb3RvY29yZSMxLjQwLjc0IHVhLzIuMSBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCN4ODZfNjQgbGFuZy9weXRob24jMy4xMC4xNiBtZC9weWltcGwjQ1B5dGhvbiBtL1os
+        bixiLEQsUCBjZmcvcmV0cnktbW9kZSNsZWdhY3kgQm90b2NvcmUvMS40MC43NCBSZXNvdXJjZQ==
+    method: POST
+    uri: https://dynamodb.eu-south-1.amazonaws.com/
+  response:
+    body:
+      string: '{}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '2'
+      Content-Type:
+      - application/x-amz-json-1.0
+      Date:
+      - Sat, 15 Nov 2025 19:57:50 GMT
+      Server:
+      - Server
+      x-amz-crc32:
+      - '2745614147'
+      x-amzn-RequestId:
+      - 9S67G7VVF9PPN5A7DH13CAMNF7VV4KQNSO5AEMVJF66Q9ASUAAJG
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"TableName": "botte-be-task-prod"}'
+    headers:
+      Authorization:
+      - '**REDACTED**'
+      Content-Length:
+      - '35'
+      Content-Type:
+      - !!binary |
+        YXBwbGljYXRpb24veC1hbXotanNvbi0xLjA=
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS40MC43NCBtZC9Cb3RvY29yZSMxLjQwLjc0IHVhLzIuMSBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCN4ODZfNjQgbGFuZy9weXRob24jMy4xMC4xNiBtZC9weWltcGwjQ1B5dGhvbiBtL1os
+        bixiLEQsUCBjZmcvcmV0cnktbW9kZSNsZWdhY3kgQm90b2NvcmUvMS40MC43NCBSZXNvdXJjZQ==
+    method: POST
+    uri: https://dynamodb.eu-south-1.amazonaws.com/
+  response:
+    body:
+      string: '{"Table":{"AttributeDefinitions":[{"AttributeName":"PK","AttributeType":"S"},{"AttributeName":"SK","AttributeType":"S"}],"BillingModeSummary":{"BillingMode":"PAY_PER_REQUEST","LastUpdateToPayPerRequestDateTime":1.762787594722E9},"CreationDateTime":1.762787594722E9,"DeletionProtectionEnabled":false,"ItemCount":0,"KeySchema":[{"AttributeName":"PK","KeyType":"HASH"},{"AttributeName":"SK","KeyType":"RANGE"}],"LatestStreamArn":"arn:aws:dynamodb:eu-south-1:477353422995:table/botte-be-task-prod/stream/2025-11-10T15:13:14.722","LatestStreamLabel":"2025-11-10T15:13:14.722","ProvisionedThroughput":{"NumberOfDecreasesToday":0,"ReadCapacityUnits":0,"WriteCapacityUnits":0},"StreamSpecification":{"StreamEnabled":true,"StreamViewType":"NEW_IMAGE"},"TableArn":"arn:aws:dynamodb:eu-south-1:477353422995:table/botte-be-task-prod","TableClassSummary":{"TableClass":"STANDARD"},"TableId":"53d35ddb-212a-4d15-8378-0af92e93dda7","TableName":"botte-be-task-prod","TableSizeBytes":0,"TableStatus":"ACTIVE","TableThroughputModeSummary":{"LastUpdateToPayPerRequestDateTime":1.762787594722E9,"TableThroughputMode":"PAY_PER_REQUEST"},"WarmThroughput":{"ReadUnitsPerSecond":12000,"Status":"ACTIVE","WriteUnitsPerSecond":4000}}}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '1208'
+      Content-Type:
+      - application/x-amz-json-1.0
+      Date:
+      - Sat, 15 Nov 2025 19:57:50 GMT
+      Server:
+      - Server
+      x-amz-crc32:
+      - '3278714032'
+      x-amzn-RequestId:
+      - UKMI6BD994HE0M16BGM3TAFP0BVV4KQNSO5AEMVJF66Q9ASUAAJG
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"TableName": "botte-be-task-prod", "Item": {"PK": {"S": "BOTTE_MESSAGE#G1"},
+      "SK": {"S": "35WpSW93GLcViNt278DtgLlQpRq"}, "TaskId": {"S": "BOTTE_MESSAGE"},
+      "SenderApp": {"S": "BOTTE_DYNAMODB_CLIENT_PYTESTS"}, "Payload": {"M": {"text":
+      {"S": "Hello world from (botte-monorepo) botte dynamodb client pytests! 2"}}},
+      "ExpirationTs": {"N": "1920997986"}}, "ConditionExpression": "attribute_not_exists(PK)"}'
+    headers:
+      Authorization:
+      - '**REDACTED**'
+      Content-Length:
+      - '402'
+      Content-Type:
+      - !!binary |
+        YXBwbGljYXRpb24veC1hbXotanNvbi0xLjA=
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS40MC43NCBtZC9Cb3RvY29yZSMxLjQwLjc0IHVhLzIuMSBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCN4ODZfNjQgbGFuZy9weXRob24jMy4xMC4xNiBtZC9weWltcGwjQ1B5dGhvbiBtL1os
+        bixiLEQsUCBjZmcvcmV0cnktbW9kZSNsZWdhY3kgQm90b2NvcmUvMS40MC43NCBSZXNvdXJjZQ==
+    method: POST
+    uri: https://dynamodb.eu-south-1.amazonaws.com/
+  response:
+    body:
+      string: '{}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '2'
+      Content-Type:
+      - application/x-amz-json-1.0
+      Date:
+      - Sat, 15 Nov 2025 19:57:50 GMT
+      Server:
+      - Server
+      x-amz-crc32:
+      - '2745614147'
+      x-amzn-RequestId:
+      - 90GE3HB3F9KUUM3RN79LOR322JVV4KQNSO5AEMVJF66Q9ASUAAJG
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"TableName": "botte-be-task-prod"}'
+    headers:
+      Authorization:
+      - '**REDACTED**'
+      Content-Length:
+      - '35'
+      Content-Type:
+      - !!binary |
+        YXBwbGljYXRpb24veC1hbXotanNvbi0xLjA=
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS40MC43NCBtZC9Cb3RvY29yZSMxLjQwLjc0IHVhLzIuMSBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCN4ODZfNjQgbGFuZy9weXRob24jMy4xMC4xNiBtZC9weWltcGwjQ1B5dGhvbiBtL1os
+        bixiLEQsUCBjZmcvcmV0cnktbW9kZSNsZWdhY3kgQm90b2NvcmUvMS40MC43NCBSZXNvdXJjZQ==
+    method: POST
+    uri: https://dynamodb.eu-south-1.amazonaws.com/
+  response:
+    body:
+      string: '{"Table":{"AttributeDefinitions":[{"AttributeName":"PK","AttributeType":"S"},{"AttributeName":"SK","AttributeType":"S"}],"BillingModeSummary":{"BillingMode":"PAY_PER_REQUEST","LastUpdateToPayPerRequestDateTime":1.762787594722E9},"CreationDateTime":1.762787594722E9,"DeletionProtectionEnabled":false,"ItemCount":0,"KeySchema":[{"AttributeName":"PK","KeyType":"HASH"},{"AttributeName":"SK","KeyType":"RANGE"}],"LatestStreamArn":"arn:aws:dynamodb:eu-south-1:477353422995:table/botte-be-task-prod/stream/2025-11-10T15:13:14.722","LatestStreamLabel":"2025-11-10T15:13:14.722","ProvisionedThroughput":{"NumberOfDecreasesToday":0,"ReadCapacityUnits":0,"WriteCapacityUnits":0},"StreamSpecification":{"StreamEnabled":true,"StreamViewType":"NEW_IMAGE"},"TableArn":"arn:aws:dynamodb:eu-south-1:477353422995:table/botte-be-task-prod","TableClassSummary":{"TableClass":"STANDARD"},"TableId":"53d35ddb-212a-4d15-8378-0af92e93dda7","TableName":"botte-be-task-prod","TableSizeBytes":0,"TableStatus":"ACTIVE","TableThroughputModeSummary":{"LastUpdateToPayPerRequestDateTime":1.762787594722E9,"TableThroughputMode":"PAY_PER_REQUEST"},"WarmThroughput":{"ReadUnitsPerSecond":12000,"Status":"ACTIVE","WriteUnitsPerSecond":4000}}}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '1208'
+      Content-Type:
+      - application/x-amz-json-1.0
+      Date:
+      - Sat, 15 Nov 2025 19:57:50 GMT
+      Server:
+      - Server
+      x-amz-crc32:
+      - '3278714032'
+      x-amzn-RequestId:
+      - BUHMUO7ANTUNL5PPAPN1RFCE2VVV4KQNSO5AEMVJF66Q9ASUAAJG
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"TableName": "botte-be-task-prod", "Item": {"PK": {"S": "BOTTE_MESSAGE#G2"},
+      "SK": {"S": "35WpTOaQGws2RuckBlQB17ADsnd"}, "TaskId": {"S": "BOTTE_MESSAGE"},
+      "SenderApp": {"S": "BOTTE_DYNAMODB_CLIENT_PYTESTS"}, "Payload": {"M": {"text":
+      {"S": "Hello world from (botte-monorepo) botte dynamodb client pytests! 3"}}},
+      "ExpirationTs": {"N": "1920997986"}}, "ConditionExpression": "attribute_not_exists(PK)"}'
+    headers:
+      Authorization:
+      - '**REDACTED**'
+      Content-Length:
+      - '402'
+      Content-Type:
+      - !!binary |
+        YXBwbGljYXRpb24veC1hbXotanNvbi0xLjA=
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS40MC43NCBtZC9Cb3RvY29yZSMxLjQwLjc0IHVhLzIuMSBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCN4ODZfNjQgbGFuZy9weXRob24jMy4xMC4xNiBtZC9weWltcGwjQ1B5dGhvbiBtL1os
+        bixiLEQsUCBjZmcvcmV0cnktbW9kZSNsZWdhY3kgQm90b2NvcmUvMS40MC43NCBSZXNvdXJjZQ==
+    method: POST
+    uri: https://dynamodb.eu-south-1.amazonaws.com/
+  response:
+    body:
+      string: '{}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '2'
+      Content-Type:
+      - application/x-amz-json-1.0
+      Date:
+      - Sat, 15 Nov 2025 19:57:51 GMT
+      Server:
+      - Server
+      x-amz-crc32:
+      - '2745614147'
+      x-amzn-RequestId:
+      - 1TAQD5MRQ7OTBR5V63L2R6NSVBVV4KQNSO5AEMVJF66Q9ASUAAJG
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"TableName": "botte-be-task-prod"}'
+    headers:
+      Authorization:
+      - '**REDACTED**'
+      Content-Length:
+      - '35'
+      Content-Type:
+      - !!binary |
+        YXBwbGljYXRpb24veC1hbXotanNvbi0xLjA=
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS40MC43NCBtZC9Cb3RvY29yZSMxLjQwLjc0IHVhLzIuMSBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCN4ODZfNjQgbGFuZy9weXRob24jMy4xMC4xNiBtZC9weWltcGwjQ1B5dGhvbiBtL1os
+        bixiLEQsUCBjZmcvcmV0cnktbW9kZSNsZWdhY3kgQm90b2NvcmUvMS40MC43NCBSZXNvdXJjZQ==
+    method: POST
+    uri: https://dynamodb.eu-south-1.amazonaws.com/
+  response:
+    body:
+      string: '{"Table":{"AttributeDefinitions":[{"AttributeName":"PK","AttributeType":"S"},{"AttributeName":"SK","AttributeType":"S"}],"BillingModeSummary":{"BillingMode":"PAY_PER_REQUEST","LastUpdateToPayPerRequestDateTime":1.762787594722E9},"CreationDateTime":1.762787594722E9,"DeletionProtectionEnabled":false,"ItemCount":0,"KeySchema":[{"AttributeName":"PK","KeyType":"HASH"},{"AttributeName":"SK","KeyType":"RANGE"}],"LatestStreamArn":"arn:aws:dynamodb:eu-south-1:477353422995:table/botte-be-task-prod/stream/2025-11-10T15:13:14.722","LatestStreamLabel":"2025-11-10T15:13:14.722","ProvisionedThroughput":{"NumberOfDecreasesToday":0,"ReadCapacityUnits":0,"WriteCapacityUnits":0},"StreamSpecification":{"StreamEnabled":true,"StreamViewType":"NEW_IMAGE"},"TableArn":"arn:aws:dynamodb:eu-south-1:477353422995:table/botte-be-task-prod","TableClassSummary":{"TableClass":"STANDARD"},"TableId":"53d35ddb-212a-4d15-8378-0af92e93dda7","TableName":"botte-be-task-prod","TableSizeBytes":0,"TableStatus":"ACTIVE","TableThroughputModeSummary":{"LastUpdateToPayPerRequestDateTime":1.762787594722E9,"TableThroughputMode":"PAY_PER_REQUEST"},"WarmThroughput":{"ReadUnitsPerSecond":12000,"Status":"ACTIVE","WriteUnitsPerSecond":4000}}}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '1208'
+      Content-Type:
+      - application/x-amz-json-1.0
+      Date:
+      - Sat, 15 Nov 2025 19:57:51 GMT
+      Server:
+      - Server
+      x-amz-crc32:
+      - '3278714032'
+      x-amzn-RequestId:
+      - R5KQKEQQCQJNFLED8GLMJ7IMQJVV4KQNSO5AEMVJF66Q9ASUAAJG
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"TableName": "botte-be-task-prod", "Item": {"PK": {"S": "BOTTE_MESSAGE"},
+      "SK": {"S": "35WpUUMlOPXkwz1LjObF3UnQlr9"}, "TaskId": {"S": "BOTTE_MESSAGE"},
+      "SenderApp": {"S": "BOTTE_DYNAMODB_CLIENT_PYTESTS"}, "Payload": {"M": {"text":
+      {"S": "Hello world from (botte-monorepo) botte dynamodb client pytests! 4"}}},
+      "ExpirationTs": {"N": "1920997986"}}, "ConditionExpression": "attribute_not_exists(PK)"}'
+    headers:
+      Authorization:
+      - '**REDACTED**'
+      Content-Length:
+      - '399'
+      Content-Type:
+      - !!binary |
+        YXBwbGljYXRpb24veC1hbXotanNvbi0xLjA=
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS40MC43NCBtZC9Cb3RvY29yZSMxLjQwLjc0IHVhLzIuMSBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCN4ODZfNjQgbGFuZy9weXRob24jMy4xMC4xNiBtZC9weWltcGwjQ1B5dGhvbiBtL1os
+        bixiLEQsUCBjZmcvcmV0cnktbW9kZSNsZWdhY3kgQm90b2NvcmUvMS40MC43NCBSZXNvdXJjZQ==
+    method: POST
+    uri: https://dynamodb.eu-south-1.amazonaws.com/
+  response:
+    body:
+      string: '{}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '2'
+      Content-Type:
+      - application/x-amz-json-1.0
+      Date:
+      - Sat, 15 Nov 2025 19:57:51 GMT
+      Server:
+      - Server
+      x-amz-crc32:
+      - '2745614147'
+      x-amzn-RequestId:
+      - 66RPONOL3M875RTMC7MHE0UETFVV4KQNSO5AEMVJF66Q9ASUAAJG
+    status:
+      code: 200
+      message: OK
+version: 1

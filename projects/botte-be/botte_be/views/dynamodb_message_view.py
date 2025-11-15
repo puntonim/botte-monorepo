@@ -69,7 +69,7 @@ def lambda_handler(event: dict[str, Any], context: LambdaContext) -> None:
                                 "S": "34t1cou0pVRlvW8OECP0J1Q4nJC"
                             },
                             "PK": {
-                                "S": "BOTTE_MESSAGE"
+                                "S": "BOTTE_MESSAGE:34t1cou0pVRlvW8OECP0J1Q4nJC"
                             }
                         },
                         "NewImage": {
@@ -93,7 +93,7 @@ def lambda_handler(event: dict[str, Any], context: LambdaContext) -> None:
                                 }
                             },
                             "PK": {
-                                "S": "BOTTE_MESSAGE"
+                                "S": "BOTTE_MESSAGE:34t1cou0pVRlvW8OECP0J1Q4nJC"
                             }
                         },
                         "SequenceNumber": "4444500001357803510521810",
@@ -124,7 +124,7 @@ def lambda_handler(event: dict[str, Any], context: LambdaContext) -> None:
         To trigger this Lambda, write to the DynamoDB table arn:aws:dynamodb:eu-south-1:477353422995:table/botte-be-task-prod
          a record like:
         {
-          "PK": "BOTTE_MESSAGE",
+          "PK": "BOTTE_MESSAGE:2XnrDN2uSq7WWNMADOgCgtMovSj",
           "SK": str(ksuid.KsuidMs()),
           "TaskId": "BOTTE_MESSAGE",
           "SenderApp": "CONTABEL",
@@ -136,7 +136,7 @@ def lambda_handler(event: dict[str, Any], context: LambdaContext) -> None:
 
         Which in DynamoDB console would be:
         {
-            "PK": {"S": "BOTTE_MESSAGE"},
+            "PK": {"S": "BOTTE_MESSAGE:2XnrDN2uSq7WWNMADOgCgtMovSj"},
             "SK": {"S": "2XnrDN2uSq7WWNMADOgCgtMovSj"},
             "TaskId": {"S": "BOTTE_MESSAGE"},
             "ExpirationTs": {"N": "1699275564"},

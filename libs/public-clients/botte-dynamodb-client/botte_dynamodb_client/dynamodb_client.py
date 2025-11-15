@@ -2,11 +2,14 @@
 ** BOTTE DYNAMODB CLIENT **
 ===========================
 
-This Botte DynamoDB client is the preferred client to interact with Botte, when the
- consumer:
+This Botte DynamoDB client is the preferred client to interact with Botte in order
+ to send Telegram text messages, when the consumer:
  - is running in AWS infra, in the same AWS account as Botte (otherwise use `botte-http-client`)
  - but it cannot invoke Botte Lambdas directly, fi. it is in a VPC with no connection to
     other AWS services nor Internet access (otherwise use `botte-lambda-client`)
+
+Multiple Telegram messages will be sent by many Lambdas concurrently, unless the
+ `do_send_msg_fifo` (and optionally `fifo_group_id`) arg is given.
 
 Note: one of my patterns is to have Lambdas that connect to a SQLite database stored
  on EFS. EFS requires a VPC, and the Lambda to be in the same VPC. But, for VPCs,
@@ -44,6 +47,8 @@ class BotteDynamodbClient:
         self,
         text: str,
         sender_app: str = "BOTTE_DYNAMODB_CLIENT",
+        do_send_msg_fifo: bool = False,
+        fifo_group_id: str | None = None,
         table_name: str = TABLE_NAME,
         # Used in pytests, see docstring.
         botte_message_dynamodb_task_extra_kwargs: dict | None = None,
@@ -52,6 +57,16 @@ class BotteDynamodbClient:
         Args:
             text (str): the text of the message to send.
             sender_app (str): just an identifier, default: "BOTTE_HTTP_CLIENT".
+            do_send_msg_fifo: True to have Botte Lambda send this message
+             sequentially in FIFO order, together with all other messages with
+             do_send_msg_fifo=True and the same fifo_group_id.
+             False to maximize concurrency, so many Lambdas will send all msgs with
+             do_send_msg_fifo=False concurrently.
+            fifo_group_id: only useful in a very rare use case: when you have 2+ groups
+             of msgs that need to be sent by Lambda sequentially. You will have
+             2+ concurrent Lambdas that send msgs with the same fifo_group_id
+             sequentially. So it's concurrency between groups, but sequentially for
+             msgs of the same group.
             table_name (str): name of DynamoDB table used as task queue by Botte
              Backend, optional.
             botte_message_dynamodb_task_extra_kwargs (dict): optional, used in pytests
@@ -69,6 +84,8 @@ class BotteDynamodbClient:
         data = dict(
             text=text,
             sender_app=sender_app,
+            do_process_task_fifo=do_send_msg_fifo,
+            fifo_group_id=fifo_group_id,
             expiration_ts=round(now.timestamp()),
         )
         data.update(botte_message_dynamodb_task_extra_kwargs or {})

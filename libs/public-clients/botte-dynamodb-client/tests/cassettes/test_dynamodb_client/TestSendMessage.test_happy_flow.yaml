@@ -38,11 +38,11 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: '{"TableName": "botte-be-task-prod", "Item": {"PK": {"S": "BOTTE_MESSAGE"},
+    body: '{"TableName": "botte-be-task-prod", "Item": {"PK": {"S": "BOTTE_MESSAGE#34sbgpYvCbhsUZtNvB8OVmsxsAp"},
       "SK": {"S": "34sbgpYvCbhsUZtNvB8OVmsxsAp"}, "TaskId": {"S": "BOTTE_MESSAGE"},
       "SenderApp": {"S": "BOTTE_DYNAMODB_CLIENT_PYTESTS"}, "Payload": {"M": {"text":
       {"S": "Hello world from (botte-monorepo) botte dynamodb client pytests!"}}},
-      "ExpirationTs": {"N": "1762002142"}}, "ConditionExpression": "attribute_not_exists(PK)"}'
+      "ExpirationTs": {"N": "1920997986"}}, "ConditionExpression": "attribute_not_exists(PK)"}'
     headers:
       Authorization:
       - '**REDACTED**'
