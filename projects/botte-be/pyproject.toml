@@ -33,6 +33,10 @@ dev = [
     #  anymore in recent versions of Poetry. `poetry-plugin-export` solves this.
     # https://github.com/oss-review-toolkit/ort/issues/10642
     "poetry-plugin-export (>=1.9.0,<2.0.0)",
+    # `text-utils`, `requests`, `aws-lambda-client` required by scripts/telegram_webhook_cli.py.
+    "text-utils @ git+https://github.com/puntonim/utils-monorepo#subdirectory=text-utils",
+    "requests (>=2.32.5,<3.0.0)",
+    "aws-lambda-client @ git+https://github.com/puntonim/clients-monorepo#subdirectory=aws-lambda-client",
 ]
 test = [
     "pytest (>=8.4.2,<9.0.0)",
@@ -48,6 +52,9 @@ test-e2e = [
     "botte-lambda-client @ ../../libs/public-clients/botte-lambda-client",
     "botte-dynamodb-client @ ../../libs/public-clients/botte-dynamodb-client",
 ]
+
+[project.scripts]
+telegram-webhook = 'botte_be.scripts.telegram_webhook_cli:main'
 
 [tool.ruff]
 line-length = 88  # Default.

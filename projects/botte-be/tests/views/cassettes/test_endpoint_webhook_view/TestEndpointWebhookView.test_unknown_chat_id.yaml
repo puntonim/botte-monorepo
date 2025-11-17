@@ -1,0 +1,41 @@
+interactions:
+- request:
+    body: '{"Name": "/botte-be/prod/telegram-token", "WithDecryption": true}'
+    headers:
+      Authorization:
+      - '**REDACTED**'
+      Content-Length:
+      - '65'
+      Content-Type:
+      - !!binary |
+        YXBwbGljYXRpb24veC1hbXotanNvbi0xLjE=
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS40MC40IG1kL0JvdG9jb3JlIzEuNDAuNCB1YS8yLjEgb3MvbWFjb3MjMjIuNi4wIG1k
+        L2FyY2gjeDg2XzY0IGxhbmcvcHl0aG9uIzMuMTMuNyBtZC9weWltcGwjQ1B5dGhvbiBtL2IsWixE
+        IGNmZy9yZXRyeS1tb2RlI2xlZ2FjeSBCb3RvY29yZS8xLjQwLjQgUFQvbm8tb3AvMy4yMy4wIFBU
+        RW52L05B
+    method: POST
+    uri: https://ssm.eu-south-1.amazonaws.com/
+  response:
+    body:
+      string: '{"Parameter": {"ARN": "arn:aws:ssm:eu-south-1:477353422995:parameter/botte-be/prod/telegram-token",
+        "DataType": "text", "LastModifiedDate": 1761419211.248, "Name": "/botte-be/prod/telegram-token",
+        "Type": "SecureString", "Value": "6570886232:**REDACTED**", "Version": 1}}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '282'
+      Content-Type:
+      - application/x-amz-json-1.1
+      Date:
+      - Mon, 17 Nov 2025 15:02:42 GMT
+      Server:
+      - Server
+      x-amzn-RequestId:
+      - c282c866-1cdb-484d-9d84-8868109f12ab
+    status:
+      code: 200
+      message: OK
+version: 1

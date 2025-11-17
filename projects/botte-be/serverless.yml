@@ -34,8 +34,22 @@ provider:
         #  to 0 in AWS web console. But then switch it back to 3600.
         resultTtlInSeconds: 3600 # Cache authorizer results for 1 hour.
         identitySource:
-          # All these should be sent for a request to be valid.
+          # ALL these should be sent for a request to be valid.
+          # Mind: ALL and not ANY!
           - $request.header.Authorization # The header to be cached.
+      # For Telegram webhook only.
+      webhookAuthorizer:
+        type: request
+        functionName: authorizer
+        enableSimpleResponses: true
+        # Note: you can manually clear the cache by temporary setting this value
+        #  to 0 in AWS web console. But then switch it back to 3600.
+        resultTtlInSeconds: 3600 # Cache authorizer results for 1 hour.
+        identitySource:
+          # ALL these should be sent for a request to be valid.
+          # Mind: ALL and not ANY!
+          # Sent by Telegram in the webhook request.
+          - $request.header.X-Telegram-Bot-Api-Secret-Token # The header to be cached.
   tags: # CloudFormation tags to apply to Lambdas and everything that supports them.
     project: ${self:service}
     environment: ${sls:stage}
@@ -195,6 +209,29 @@ functions:
     #  - ASYNC: S3, SNS, SQS, CloudWatch Logs, EventBridge Scheduler, aws cli, etc.
     #  - SYNC: API Gateway, aws cli, etc.
     onError: ${self:custom.awsWatchdogSnsErrorsArn}
+
+  #### Telegram webhook: API Gateway V2 ################################################
+  # IMP: do not rename! If you do, mind that is used in scripts/telegram_webhook_cli.py.
+  endpoint-telegram-webhook:
+    handler: botte_be.views.endpoint_webhook_view.lambda_handler
+    timeout: 28 # Note: API Gateway current maximum is 29 seconds.
+    maximumRetryAttempts: 0
+    events:
+      - httpApi:
+          path: /telegram-webhook
+          method: POST
+          authorizer:
+            name: webhookAuthorizer
+    iam:
+      role:
+        statements: []
+    # *Commented-out as this Lambda is with SYNC invocation (API Gateway).*
+    # DLQ only for ASYNC invocations: set, as DLQ, the SNS topic in aws-watchdog that
+    #  sends emails to me.
+    # Note: Lambda sync/async invocations examples:
+    #  - ASYNC: S3, SNS, SQS, CloudWatch Logs, EventBridge Scheduler, aws cli, etc.
+    #  - SYNC: API Gateway, aws cli, etc.
+    # onError: ${self:custom.awsWatchdogSnsErrorsArn}
 
 
 package:

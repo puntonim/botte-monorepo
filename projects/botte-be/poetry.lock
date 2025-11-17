@@ -63,7 +63,7 @@ version = "1.0.0"
 description = "Clients Monorepo: AWS Lambda Client"
 optional = false
 python-versions = ">=3.10"
-groups = ["test-e2e"]
+groups = ["dev", "test-e2e"]
 files = []
 develop = false
 
@@ -1174,7 +1174,7 @@ version = "1.0.0"
 description = "Utils Monorepo: JSON Utils"
 optional = false
 python-versions = ">=3.10"
-groups = ["main", "test-e2e"]
+groups = ["main", "dev", "test-e2e"]
 files = []
 develop = false
 
@@ -2344,7 +2344,7 @@ version = "1.0.0"
 description = "Utils Monorepo: Settings Utils"
 optional = false
 python-versions = ">=3.10"
-groups = ["main", "test"]
+groups = ["main"]
 files = []
 develop = false
 
@@ -2430,6 +2430,23 @@ files = [
 
 [package.dependencies]
 python-baseconv = "*"
+
+[[package]]
+name = "text-utils"
+version = "1.0.0"
+description = "Utils Monorepo: Text Utils"
+optional = false
+python-versions = ">=3.10"
+groups = ["dev"]
+files = []
+develop = false
+
+[package.source]
+type = "git"
+url = "https://github.com/puntonim/utils-monorepo"
+reference = "HEAD"
+resolved_reference = "0dd4f9d8d1bcc1ea7dd48beec8fc1e68c828213b"
+subdirectory = "text-utils"
 
 [[package]]
 name = "tomlkit"

@@ -89,3 +89,13 @@ format/%:
 format-check:
 	ruff check
 	ruff format --check
+
+
+.PHONY : webhook-configure
+webhook-configure:
+	poetry run telegram-webhook configure
+
+
+.PHONY : webhook-info
+webhook-info:
+	poetry run telegram-webhook info

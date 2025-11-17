@@ -10,13 +10,6 @@
 
 <br>
 
-*Note on webhooks for Telegram user commands*
----------------------------------------------
-The first version of this project is in [patatrack-monorepo](https://github.com/puntonim/patatrack-monorepo/tree/main/projects/botte),
- now archived. It included a webhook endpoint for Telegram user commands like `/echo`,
- to interact with the bot by sending messages.
-
-
 📐 Architecture
 ================
 
