@@ -4,7 +4,6 @@
 #  - Serverless for AWS full specs: https://www.serverless.com/framework/docs/providers/aws/guide/serverless.yml/
 #  - Python reqs: https://www.serverless.com/framework/docs/providers/aws/guide/python
 #  - IAM: https://www.serverless.com/framework/docs/providers/aws/guide/iam
-#  - IAM Roles Per Function: https://www.serverless.com/framework/docs/providers/aws/guide/iam
 
 
 service: botte-be
@@ -253,7 +252,6 @@ custom:
   awsWatchdogSqsErrorsArn: arn:aws:sqs:eu-south-1:477353422995:aws-watchdog-errors-prod
   awsWatchdogSnsErrorsArn: arn:aws:sns:eu-south-1:477353422995:aws-watchdog-errors-prod
 
-  # Plugin: serverless-python-requirements.
   pythonRequirements:
     # With the layer option, a new layer is created with the naming convention ${self:service}-${sls:stage}-python-requirements.
     layer: True
